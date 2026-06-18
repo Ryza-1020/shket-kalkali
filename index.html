@@ -340,7 +340,10 @@ firebase.initializeApp(firebaseConfig);
 const db_fs=firebase.firestore();
 async function saveDBCloud(db){
   try{
-    await db_fs.collection('shket').doc('main').set({data:JSON.stringify(db)});
+    // הסר dataUrl לפני שמירה לענן (גדול מדי)
+    const dbClean=JSON.parse(JSON.stringify(db));
+    dbClean.families.forEach(f=>(f.docs||[]).forEach(d=>{delete d.dataUrl;}));
+    await db_fs.collection('shket').doc('main').set({data:JSON.stringify(dbClean)});
     console.log('✅ Cloud save OK');
     showToast('☁️ נתונים נשמרו לענן');
   }catch(e){
