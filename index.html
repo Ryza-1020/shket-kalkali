@@ -417,11 +417,23 @@ function saveDB(db){
 let DB=loadDB();
 loadDBCloud().then(cloudDB=>{
   if(cloudDB){
-    if(!cloudDB.families.some(f=>f.id==='fam_demo'))cloudDB.families.unshift(JSON.parse(JSON.stringify(DEMO_FAMILY)));
-    DB=cloudDB;
-    localStorage.setItem(DB_KEY,JSON.stringify(DB));
-    try{tryAutoLogin();}catch(e){}
+    // ענן קיים — בדוק אם יש נתונים מקומיים חדשים שהענן לא מכיר
+    const localFamiliesWithDocs=DB.families.filter(f=>f.id!=='fam_demo'&&f.docs&&f.docs.length>0);
+    const cloudFamiliesWithDocs=cloudDB.families.filter(f=>f.id!=='fam_demo'&&f.docs&&f.docs.length>0);
+    if(localFamiliesWithDocs.length>cloudFamiliesWithDocs.length){
+      // יש נתונים מקומיים שהענן לא מכיר — דחוף לענן
+      if(!DB.families.some(f=>f.id==='fam_demo'))DB.families.unshift(JSON.parse(JSON.stringify(DEMO_FAMILY)));
+      saveDBCloud(DB);
+    } else {
+      if(!cloudDB.families.some(f=>f.id==='fam_demo'))cloudDB.families.unshift(JSON.parse(JSON.stringify(DEMO_FAMILY)));
+      DB=cloudDB;
+      localStorage.setItem(DB_KEY,JSON.stringify(DB));
+    }
+  } else {
+    // ענן ריק — דחוף נתונים מקומיים לענן
+    saveDBCloud(DB);
   }
+  try{tryAutoLogin();}catch(e){}
 }).catch(()=>{});
 let currentFamily=null;
 let chatHistory=[];
