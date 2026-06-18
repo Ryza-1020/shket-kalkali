@@ -246,10 +246,6 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--gray);color:var(--
         <label class="field-label">סיסמה</label>
         <input class="field-input" type="password" placeholder="••••" id="family-pass" onkeydown="if(event.key==='Enter')loginFamily()">
       </div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-        <input type="checkbox" id="remember-me" style="width:16px;height:16px;cursor:pointer">
-        <label for="remember-me" style="font-size:13px;color:var(--gray5);cursor:pointer">זכור אותי במכשיר זה</label>
-      </div>
       <button class="btn-primary" onclick="loginFamily()">כניסה לאזור האישי</button>
       <div class="login-footer">שכחתי קוד — פנה/י ליועץ שלך</div>
       <div style="margin-top:14px;font-size:11px;color:var(--gray4);text-align:center;line-height:1.6;border-top:1px solid var(--gray3);padding-top:12px">כלי עזר לחשיבה בלבד · אינו מהווה ייעוץ מקצועי · שימוש פרטי בלבד</div>
@@ -333,57 +329,6 @@ const DB_KEY='shkDb';
 const SESSION_KEY='shketSession';
 
 const DEFAULT_DB={families:[{
-  id:'fam_demo',name:'ישראלי',username:'demo',password:'1234',
-  status:'active',since:'ינו 2025',members:'משפחת דוגמא',
-  termsAccepted:true,onboardingDone:true,
-  score:74,
-  kpi:{income:28500,expense:23200,cashflow:5300,balance:74},
-  goals:[
-    {name:'קרן חירום',icon:'🛡️',bg:'#f0fdf4',target:50000,current:18000,date:'דצמ 2026'},
-    {name:'חופשה משפחתית',icon:'✈️',bg:'#fdf4ff',target:12000,current:4800,date:'יול 2026'},
-  ],
-  tasks:[
-    {text:'להעביר תשלום ביטוח לאומי',done:false,prio:'h'},
-    {text:'לבדוק מחזור משכנתא',done:false,prio:'m'},
-    {text:'לפתוח קרן השתלמות',done:true,prio:'l'},
-  ],
-  budget:[
-    {cat:'מזון',budgetGoal:3500,actual:3200},
-    {cat:'דלק ותחבורה',budgetGoal:2000,actual:2100},
-    {cat:'בידור',budgetGoal:1500,actual:1800},
-    {cat:'ביגוד',budgetGoal:1000,actual:650},
-    {cat:'משכנתא',budgetGoal:11150,actual:11150},
-  ],
-  assets:[
-    {name:'דירה',type:'real_estate',value:1850000,date:'2020'},
-    {name:'קרן השתלמות',type:'savings',value:95000,date:'2024'},
-    {name:'פנסיה',type:'pension',value:320000,date:'2024'},
-  ],
-  docs:[
-    {name:'תלוש משכורת - יוני 2025.pdf',type:'salary',uploadedAt:'2025-06-01',analyzed:true,
-     aiType:'salary',aiIncome:18500,aiExpense:0,aiBalance:0,aiOneTime:0,aiCreditPayments:0,
-     aiCategories:{},aiSummary:'משכורת חודשית ברוטו 24,200 ש"ח, נטו 18,500 ש"ח'},
-    {name:'תדפיס בנק - מאי 2025.pdf',type:'bank',uploadedAt:'2025-06-01',analyzed:true,
-     aiType:'bank',aiIncome:10200,aiExpense:0,aiBalance:42000,aiOneTime:1200,aiCreditPayments:12800,
-     aiCategories:{},aiSummary:'הכנסות 10,200 ש"ח, חיוב אשראי 12,800 ש"ח, יתרה 42,000 ש"ח'},
-    {name:'דף אשראי ויזה - אפריל 2025.pdf',type:'credit',uploadedAt:'2025-06-01',analyzed:true,
-     aiType:'credit',aiIncome:0,aiExpense:11400,aiBalance:0,aiOneTime:800,aiCreditPayments:0,
-     aiCategories:{מזון:3200,דלק:1800,מסעדות:1400,ביגוד:650,בידור:1200,שונות:3150},
-     aiSummary:'סך חיוב 11,400 ש"ח, כולל רכישה חד-פעמית 800 ש"ח'},
-    {name:'דף אשראי ויזה - מאי 2025.pdf',type:'credit',uploadedAt:'2025-06-01',analyzed:true,
-     aiType:'credit',aiIncome:0,aiExpense:13200,aiBalance:0,aiOneTime:0,aiCreditPayments:0,
-     aiCategories:{מזון:3400,דלק:2100,מסעדות:1600,ביגוד:800,בידור:1800,שונות:3500},
-     aiSummary:'סך חיוב 13,200 ש"ח'},
-    {name:'הסכם משכנתא.pdf',type:'mortgage',uploadedAt:'2025-06-01',analyzed:true,
-     aiType:'mortgage',aiIncome:0,aiExpense:11150,aiBalance:0,aiOneTime:0,aiCreditPayments:0,
-     aiCategories:{},aiSummary:'החזר חודשי 11,150 ש"ח, יתרת חוב 680,000 ש"ח'},
-  ],
-  months:[],incomes:[],expenses:[],
-  categories:{מזון:3300,דלק:1950,מסעדות:1500,ביגוד:725,בידור:1500,שונות:3325},
-  messages:[
-    {from:'יועץ - דרור',text:'ברוכים הבאים למערכת שקט כלכלי! זוהי משפחת דוגמא להדגמת המערכת.',time:'עכשיו'},
-  ],
-},{
   id:'fam_cohen',name:'כהן',username:'cohen',password:'1234',
   status:'active',since:'ינו 2025',members:'לקוח',
   termsAccepted:false,onboardingDone:false,
@@ -393,16 +338,7 @@ const DEFAULT_DB={families:[{
   messages:[{from:'יועץ - דרור',text:'ברוכים הבאים! אשמח לעזור לכם להגיע לשקט כלכלי.',time:'עכשיו'}],
 }]};
 
-function loadDB(){
-  try{
-    const r=localStorage.getItem(DB_KEY);
-    const db=r?JSON.parse(r):JSON.parse(JSON.stringify(DEFAULT_DB));
-    if(!db.families.some(f=>f.id==='fam_demo')){
-      db.families.unshift(JSON.parse(JSON.stringify(DEFAULT_DB.families[0])));
-    }
-    return db;
-  }catch(e){return JSON.parse(JSON.stringify(DEFAULT_DB));}
-}
+function loadDB(){try{const r=localStorage.getItem(DB_KEY);return r?JSON.parse(r):JSON.parse(JSON.stringify(DEFAULT_DB));}catch(e){return JSON.parse(JSON.stringify(DEFAULT_DB));}}
 let _saveCount=0;
 function saveDB(db){
   try{
@@ -453,11 +389,6 @@ function loginFamily(){
   if(!f||f.password!==pass){showToast('שם משתמש או סיסמה שגויים');return;}
   currentFamily=f;
   sessionStorage.setItem(SESSION_KEY,JSON.stringify({type:'family',id:f.id}));
-  if(document.getElementById('remember-me')?.checked){
-    localStorage.setItem('shket_remember',JSON.stringify({user,pass}));
-  } else {
-    localStorage.removeItem('shket_remember');
-  }
   enterApp();
 }
 
@@ -525,37 +456,16 @@ function logout(){
 
 function tryAutoLogin(){
   try{
-    // 1. session (רלוונטי לאותו tab)
     const sess=sessionStorage.getItem(SESSION_KEY);
-    if(sess){
-      const data=JSON.parse(sess);
-      if(data.type==='advisor'){
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('admin-shell').classList.remove('hidden');
-        adminPage('families'); return;
-      } else if(data.type==='family'){
-        const f=DB.families.find(x=>x.id===data.id);
-        if(f){currentFamily=f;enterApp();return;}
-      }
-    }
-    // 2. זכור אותי (localStorage — גם בטאב חדש ומחשבים אחרים באותו דפדפן)
-    const saved=localStorage.getItem('shket_remember');
-    if(saved){
-      const {user,pass}=JSON.parse(saved);
-      const f=DB.families.find(x=>x.username===user&&x.password===pass);
-      if(f){
-        currentFamily=f;
-        sessionStorage.setItem(SESSION_KEY,JSON.stringify({type:'family',id:f.id}));
-        // סמן את הצ'קבוקס כמסומן
-        const cb=document.getElementById('remember-me');
-        if(cb) cb.checked=true;
-        // מלא את השדות
-        const uEl=document.getElementById('family-phone');
-        const pEl=document.getElementById('family-pass');
-        if(uEl) uEl.value=user;
-        if(pEl) pEl.value=pass;
-        enterApp(); return;
-      }
+    if(!sess)return;
+    const data=JSON.parse(sess);
+    if(data.type==='advisor'){
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('admin-shell').classList.remove('hidden');
+      adminPage('families');
+    } else if(data.type==='family'){
+      const f=DB.families.find(x=>x.id===data.id);
+      if(f){currentFamily=f;enterApp();}
     }
   }catch(e){}
 }
@@ -767,9 +677,9 @@ function buildDocs(){
         <div class="doc-icon" style="background:#eff6ff">${d.icon}</div>
         <div class="doc-meta"><div class="doc-name">${d.name}</div><div class="doc-info">הועלה ${d.date}${d.aiSummary?'  •  '+d.aiSummary:''}</div></div>
         <span class="doc-status ${d.status==='done'?'status-done':'status-proc'}">${d.status==='done'?'עובד ✓':'מעבד...'}</span>
-        <button onclick="reanalyzeDoc(${i})" style="background:none;border:1px solid #f59e0b;color:#a16207;border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer;margin-right:4px">🔄 נתח מחדש</button>
+        ${d.status!=='done'&&d.dataUrl?`<button onclick="reanalyzeDoc(${i})" style="background:none;border:1px solid #f59e0b;color:#a16207;border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer;margin-right:4px">🔄</button>`:''}
         ${d.dataUrl?`<button onclick="downloadDoc('${f.id}',${i})" style="background:none;border:1px solid var(--teal);color:var(--teal);border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer;margin-right:4px">⬇ הורד</button>`:''}
-        <button onclick="deleteDoc('${f.id}',${i})" style="background:none;border:1px solid #ef4444;color:#ef4444;border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer">🗑 הסר</button>
+        <button onclick="deleteDoc('${f.id}',${i})" style="background:none;border:1px solid #ef4444;color:#ef4444;border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer">🗑</button>
       </div>`).join('')}`;})():''}
     ${f.docs&&f.docs.length>0&&f.docs.length<6?`<div class="alert warn" style="margin-top:8px"><span class="alert-icon">📊</span><div class="alert-text">נותחו הנתונים הקיימים בלבד. מומלץ להעלות חודשים נוספים לשיפור הדיוק.</div></div>`:''}
     ${pendingDocs.length>0?`<div class="card" style="margin-top:16px;border:2px solid #f59e0b;background:#fffbeb">
@@ -915,7 +825,7 @@ let pendingAnalysis=[];
 let pendingDocs=[];
 
 const AI_PROMPT=`אתה מנתח מסמכים פיננסיים ישראליים. החזר JSON בלבד, ללא טקסט נוסף, ללא markdown:
-{"type":"salary|bank|credit|mortgage|loan|saving|other","income":null,"expense":null,"balance":null,"oneTime":null,"categories":null,"creditPayments":null,"summary":"תיאור קצר"}
+{"type":"salary|bank|credit|mortgage|loan|saving|other","income":null,"expense":null,"balance":null,"oneTime":null,"categories":null,"summary":"תיאור קצר"}
 
 הגדרות שדות:
 - income: הכנסה חודשית קבועה ושוטפת בלבד. אסור לכלול כאן: העברות חד-פעמיות, הלוואות, ירושות, מענקים, פיצויים, מכירות נכסים — אלה הולכים ל-oneTime בלבד. המספר המדויק ללא עיגול
@@ -925,13 +835,13 @@ const AI_PROMPT=`אתה מנתח מסמכים פיננסיים ישראליים.
 - categories: פירוט הוצאות לפי קטגוריה (לאשראי בלבד)
 
 חוקים לפי סוג מסמך:
-- type=salary: תלוש שכר → income = שכר נטו לתשלום המדויק (לא ברוטו). expense=null. oneTime=null
-- type=bank: תדפיס בנק → income = ממוצע חודשי של כל ההכנסות השוטפות הקבועות (משכורות, שכ"ד, קצבאות, הכנסות עסקיות — הכל). אל תכלול הכנסות חד-פעמיות (אלה הולכות ל-oneTime). אם הבנק מכסה מספר חודשים, חשב ממוצע. expense=null. creditPayments = ממוצע חודשי של חיובי כרטיסי אשראי שנגבו מהחשבון — חפש שורות "חיוב כרטיס", "ויזה", "מסטרקארד", "ישראכארד", "מאסטרקארד". אם הבנק מכסה X חודשים, חלק את הסכום הכולל ב-X. אם לא ניתן לזהות → creditPayments=null. oneTime = סך כל הזכויות החד-פעמיות בלבד. balance = יתרת חשבון נוכחית
-- type=credit: חשבון אשראי → expense = סך חיוב של חודש זה בלבד (לא מצטבר, לא כפול). categories = מפתחות חופשיים לפי תוכן האמיתי — לא רשימה קבועה. לדוגמה: {"מזון":500,"דלק":300,"מסעדות":200,"ביגוד":150}. income=null. oneTime=null
-- type=mortgage: תדפיס משכנתא → expense = תשלום חודשי בלבד (לא יתרת חוב!). balance = יתרת קרן לפירעון
-- type=loan: הלוואה → expense = תשלום חודשי (קרן+ריבית). balance = יתרת הלוואה
-- type=saving: קרן/חיסכון → balance = שווי נוכחי. income=null. expense=null
-- חשוב: מספרים מדויקים ללא עיגול. null = לא ניתן לקבוע`;
+- type=salary: תלוש שכר → income = שכר נטו לתשלום המדויק (לא ברוטו, לא הפקדות). oneTime=null. expense=null
+- type=bank: תדפיס בנק → income = ממוצע חודשי של הכנסות שוטפות שאינן משכורת (שכ"ד, קצבה, הכנסות עסקיות). אם כל ההכנסות הן משכורות → income=null. expense=null (הוצאות ייספרו מכרטיסי האשראי בלבד, לא מהבנק). oneTime = סך זכויות חד-פעמיות שזוהו בלבד. balance = יתרת חשבון נוכחית מדויקת
+- type=credit: חשבון אשראי → expense = סך חיוב חודשי המדויק של חודש זה בלבד (לא מצטבר). categories = {"מזון":0,"קניות":0,"תחבורה":0,"בילויים":0,"דיור":0,"בריאות":0,"חינוך":0,"אחר":0} עם הסכומים האמיתיים. income=null. oneTime=null
+- type=mortgage: תדפיס משכנתא → expense = תשלום חודשי מדויק בלבד (לא יתרת חוב!), balance = יתרת קרן לפירעון
+- type=loan: הלוואה → expense = תשלום חודשי מדויק (קרן+ריבית), balance = יתרת הלוואה
+- type=saving: קרן/חיסכון → balance = שווי נוכחי מדויק. income=null, expense=null
+- חשוב מאוד: החזר את המספרים המדויקים כפי שמופיעים במסמך — אל תעגל. null = לא ניתן לקבוע`;
 
 async function fileToImageDataUrl(file){
   return new Promise(r=>{const rd=new FileReader();rd.onload=e=>r(e.target.result);rd.onerror=()=>r(null);rd.readAsDataURL(file);});
@@ -1136,54 +1046,43 @@ function recalcKPI(){
   });
   if(uniqueDocs.length<(f.docs||[]).length) f.docs=uniqueDocs;
 
-  // ══ כלל 1: כפילויות — תמיד MAX בתוך קבוצה, לא סכום ══
-  // ══ כלל 2: שוטף בלבד — חד-פעמי הופרד ל-aiOneTime ══
-  // ══ כלל 3: השוואה נכונה בין מקורות ══
-  // ══ כלל 4: דיור = אשראי + משכנתא (לא להציג חלקית) ══
+  // ── INCOME: avoid double-counting salary that appears in bank statements ──
+  // Strategy: sum salary docs first; bank docs add income ONLY if they have
+  // non-salary sources (AI is now instructed to set bank income=null when
+  // the only inflow is the salary). Multiple salaries (two earners) are summed.
+  let salaryIncome=0, otherIncome=0;
 
-  // ── הכנסה ──
-  // תלושי שכר: כל תלוש = עובד אחר, נסכום
-  const salaryDocs=uniqueDocs.filter(d=>d.aiType==='salary'&&d.aiIncome>0);
-  const salaryIncome=salaryDocs.reduce((s,d)=>s+d.aiIncome,0);
+  uniqueDocs.filter(d=>d.aiIncome&&d.aiIncome>0).forEach(d=>{
+    const t=d.aiType||'';
+    if(t==='salary') salaryIncome+=d.aiIncome;
+    else if(t!=='bank') otherIncome+=d.aiIncome;
+  });
 
-  // בנק: כמה מסמכים לאותו חשבון → MAX בלבד
-  // אם יש תלוש שכר — הבנק לא נספר (הכנסה כבר שם)
+  // בנק: מניחים שמספר תדפיסי בנק עשויים להיות אותו חשבון → לוקחים רק את הגבוה.
+  // אם יש תלוש שכר — הבנק לא נספר (משכורת כבר שם).
   const hasSalaryDoc=salaryIncome>0;
-  const bankIncomeDocs=uniqueDocs.filter(d=>d.aiType==='bank'&&d.aiIncome>0);
-  const bankIncome=hasSalaryDoc?0:(bankIncomeDocs.length>0?Math.max(...bankIncomeDocs.map(d=>d.aiIncome)):0);
-  const bankExtraIncome=bankIncome;
-
-  // שאר הכנסות (חיסכון ופנסיה שמשלמים)
-  const otherIncome=uniqueDocs.filter(d=>!['salary','bank'].includes(d.aiType)&&d.aiIncome>0)
-    .reduce((s,d)=>s+d.aiIncome,0);
-
+  const bankDocs=uniqueDocs.filter(d=>d.aiType==='bank'&&d.aiIncome>0);
+  const bankIncome=hasSalaryDoc?0:(bankDocs.length>0?Math.max(...bankDocs.map(d=>d.aiIncome)):0);
+  const bankExtraIncome=bankIncome; // for warnings below
   const income=salaryIncome+bankIncome+otherIncome;
 
-  // ── הוצאה ──
-  // אשראי: אותה כרטיס, מספר חודשים → ממוצע חודשים מלאים (לא סכום)
-  // "חלקי" = נמוך מ-40% מהחציון
+  // ── EXPENSE ──
+  // אשראי: ממוצע חודשים מלאים בלבד (מסנן חודשים חלקיים — נמוך מ-40% מהחציון)
   const creditDocs=uniqueDocs.filter(d=>d.aiType==='credit'&&d.aiExpense>0);
   let fullCreditDocs=creditDocs;
   if(creditDocs.length>1){
-    const vals=creditDocs.map(d=>d.aiExpense).sort((a,b)=>a-b);
-    const median=vals[Math.floor(vals.length/2)];
-    const f2=creditDocs.filter(d=>d.aiExpense>=median*0.4);
-    if(f2.length>0) fullCreditDocs=f2;
+    const sorted=[...creditDocs].sort((a,b)=>a.aiExpense-b.aiExpense);
+    const median=sorted[Math.floor(sorted.length/2)].aiExpense;
+    const filtered=creditDocs.filter(d=>d.aiExpense>=median*0.4);
+    if(filtered.length>0) fullCreditDocs=filtered;
   }
-  // אם הבנק מדווח תשלומי אשראי → השתמש בזה (MAX בין בנקים, כי אותו חשבון)
-  const bankCreditVals=uniqueDocs.filter(d=>d.aiType==='bank'&&d.aiCreditPayments>0).map(d=>d.aiCreditPayments);
-  let creditExpense=0;
-  if(bankCreditVals.length>0){
-    creditExpense=Math.max(...bankCreditVals); // MAX כי אותו חשבון
-  } else if(fullCreditDocs.length>0){
-    creditExpense=fullCreditDocs.reduce((s,d)=>s+d.aiExpense,0)/fullCreditDocs.length;
-  }
+  const creditExpense=fullCreditDocs.length>0?fullCreditDocs.reduce((s,d)=>s+d.aiExpense,0)/fullCreditDocs.length:0;
 
-  // משכנתא: כמה מסמכים לאותה משכנתא → MAX (לא סכום)
+  // משכנתא: ייתכנו כמה מסמכים לאותה משכנתא — ניקח את הגבוה (לא נסכום)
   const mortgageDocs=uniqueDocs.filter(d=>d.aiType==='mortgage'&&d.aiExpense>0);
   const mortgageExpense=mortgageDocs.length>0?Math.max(...mortgageDocs.map(d=>d.aiExpense)):0;
 
-  // הלוואות: דדופליקציה ±10% (שוב, אותה הלוואה עשויה להופיע פעמיים)
+  // הלוואות: דדופליקציה לפי קירוב 10%
   const loanDocs=uniqueDocs.filter(d=>d.aiType==='loan'&&d.aiExpense>0);
   const seenLoans=[];
   let loanExpense=0;
@@ -1192,7 +1091,7 @@ function recalcKPI(){
     if(!isDup){seenLoans.push(d.aiExpense);loanExpense+=d.aiExpense;}
   });
 
-  // שאר
+  // שאר סוגים (לא בנק, לא אשראי, לא משכנתא, לא הלוואה)
   const otherExpense=uniqueDocs.filter(d=>!['credit','mortgage','loan','bank'].includes(d.aiType)&&d.aiExpense>0)
     .reduce((s,d)=>s+d.aiExpense,0);
 
@@ -1240,9 +1139,6 @@ function recalcKPI(){
     Object.entries(d.aiCategories).forEach(([k,v])=>{if(v>0)merged[k]=(merged[k]||0)+v;});
   });
   const catMonths=creditCatDocs.length||1;
-  // כלל 4: הוסף משכנתא+הלוואות לקטגוריית דיור (אחרת הדיור נראה זניח)
-  if(mortgageExpense>0) merged['משכנתא']=(merged['משכנתא']||0)+mortgageExpense*catMonths;
-  if(loanExpense>0) merged['הלוואות']=(merged['הלוואות']||0)+loanExpense*catMonths;
   if(Object.keys(merged).length>0){
     f.categories=Object.entries(merged).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1])
       .map(([k,v])=>({label:k,value:Math.round(v/catMonths),color:catColors[k]||'#94a3b8'}));
@@ -1280,7 +1176,6 @@ function applySingleDoc(ai, docEntry){
     docEntry.aiBalance=ai.balance||null;
     docEntry.aiOneTime=ai.oneTime||null;
     docEntry.aiCategories=ai.categories||null;
-    docEntry.aiCreditPayments=ai.creditPayments||null;
     docEntry.aiType=type;
     docEntry.aiSummary=ai.summary||'';
   }
@@ -2912,5 +2807,4 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 </body>
 </html>
-
 
