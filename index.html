@@ -415,22 +415,22 @@ function saveDB(db){
 
 // טען מהענן בהפעלה ראשונה
 let DB=loadDB();
+function countDocs(db){return(db.families||[]).filter(f=>f.id!=='fam_demo').reduce((s,f)=>s+(f.docs||[]).length,0);}
+function ensureDemo(db){if(!db.families.some(f=>f.id==='fam_demo'))db.families.unshift(JSON.parse(JSON.stringify(DEMO_FAMILY)));return db;}
 loadDBCloud().then(cloudDB=>{
   if(cloudDB){
-    // ענן קיים — בדוק אם יש נתונים מקומיים חדשים שהענן לא מכיר
-    const localFamiliesWithDocs=DB.families.filter(f=>f.id!=='fam_demo'&&f.docs&&f.docs.length>0);
-    const cloudFamiliesWithDocs=cloudDB.families.filter(f=>f.id!=='fam_demo'&&f.docs&&f.docs.length>0);
-    if(localFamiliesWithDocs.length>cloudFamiliesWithDocs.length){
-      // יש נתונים מקומיים שהענן לא מכיר — דחוף לענן
-      if(!DB.families.some(f=>f.id==='fam_demo'))DB.families.unshift(JSON.parse(JSON.stringify(DEMO_FAMILY)));
+    if(countDocs(DB)>countDocs(cloudDB)){
+      // מקומי מכיל יותר נתונים — דחוף לענן
+      ensureDemo(DB);
       saveDBCloud(DB);
     } else {
-      if(!cloudDB.families.some(f=>f.id==='fam_demo'))cloudDB.families.unshift(JSON.parse(JSON.stringify(DEMO_FAMILY)));
-      DB=cloudDB;
+      // ענן מכיל יותר או שווה — השתמש בענן
+      DB=ensureDemo(cloudDB);
       localStorage.setItem(DB_KEY,JSON.stringify(DB));
     }
   } else {
-    // ענן ריק — דחוף נתונים מקומיים לענן
+    // ענן ריק — דחוף כל הנתונים המקומיים לענן
+    ensureDemo(DB);
     saveDBCloud(DB);
   }
   try{tryAutoLogin();}catch(e){}
