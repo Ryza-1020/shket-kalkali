@@ -246,6 +246,10 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--gray);color:var(--
         <label class="field-label">סיסמה</label>
         <input class="field-input" type="password" placeholder="••••" id="family-pass" onkeydown="if(event.key==='Enter')loginFamily()">
       </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <input type="checkbox" id="remember-me" style="width:16px;height:16px;cursor:pointer">
+        <label for="remember-me" style="font-size:13px;color:var(--gray5);cursor:pointer">זכור אותי במכשיר זה</label>
+      </div>
       <button class="btn-primary" onclick="loginFamily()">כניסה לאזור האישי</button>
       <div class="login-footer">שכחתי קוד — פנה/י ליועץ שלך</div>
       <div style="margin-top:14px;font-size:11px;color:var(--gray4);text-align:center;line-height:1.6;border-top:1px solid var(--gray3);padding-top:12px">כלי עזר לחשיבה בלבד · אינו מהווה ייעוץ מקצועי · שימוש פרטי בלבד</div>
@@ -365,7 +369,7 @@ const DEFAULT_DB={families:[{
     {name:'דף אשראי ויזה - אפריל 2025.pdf',type:'credit',uploadedAt:'2025-06-01',analyzed:true,
      aiType:'credit',aiIncome:0,aiExpense:11400,aiBalance:0,aiOneTime:800,aiCreditPayments:0,
      aiCategories:{מזון:3200,דלק:1800,מסעדות:1400,ביגוד:650,בידור:1200,שונות:3150},
-     aiSummary:'סך חיוב 11,400 ₪, כולל רכישה חד-פעמית של 800 ₪'},
+     aiSummary:'סך חיוב 11,400 ₪, כולל רכישה חד-פעמית 800 ₪'},
     {name:'דף אשראי ויזה - מאי 2025.pdf',type:'credit',uploadedAt:'2025-06-01',analyzed:true,
      aiType:'credit',aiIncome:0,aiExpense:13200,aiBalance:0,aiOneTime:0,aiCreditPayments:0,
      aiCategories:{מזון:3400,דלק:2100,מסעדות:1600,ביגוד:800,בידור:1800,שונות:3500},
@@ -440,6 +444,11 @@ function loginFamily(){
   if(!f||f.password!==pass){showToast('שם משתמש או סיסמה שגויים');return;}
   currentFamily=f;
   sessionStorage.setItem(SESSION_KEY,JSON.stringify({type:'family',id:f.id}));
+  if(document.getElementById('remember-me')?.checked){
+    localStorage.setItem('shket_remember',JSON.stringify({user,pass}));
+  } else {
+    localStorage.removeItem('shket_remember');
+  }
   enterApp();
 }
 
@@ -507,16 +516,37 @@ function logout(){
 
 function tryAutoLogin(){
   try{
+    // 1. session (רלוונטי לאותו tab)
     const sess=sessionStorage.getItem(SESSION_KEY);
-    if(!sess)return;
-    const data=JSON.parse(sess);
-    if(data.type==='advisor'){
-      document.getElementById('login-screen').classList.add('hidden');
-      document.getElementById('admin-shell').classList.remove('hidden');
-      adminPage('families');
-    } else if(data.type==='family'){
-      const f=DB.families.find(x=>x.id===data.id);
-      if(f){currentFamily=f;enterApp();}
+    if(sess){
+      const data=JSON.parse(sess);
+      if(data.type==='advisor'){
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('admin-shell').classList.remove('hidden');
+        adminPage('families'); return;
+      } else if(data.type==='family'){
+        const f=DB.families.find(x=>x.id===data.id);
+        if(f){currentFamily=f;enterApp();return;}
+      }
+    }
+    // 2. זכור אותי (localStorage — גם בטאב חדש ומחשבים אחרים באותו דפדפן)
+    const saved=localStorage.getItem('shket_remember');
+    if(saved){
+      const {user,pass}=JSON.parse(saved);
+      const f=DB.families.find(x=>x.username===user&&x.password===pass);
+      if(f){
+        currentFamily=f;
+        sessionStorage.setItem(SESSION_KEY,JSON.stringify({type:'family',id:f.id}));
+        // סמן את הצ'קבוקס כמסומן
+        const cb=document.getElementById('remember-me');
+        if(cb) cb.checked=true;
+        // מלא את השדות
+        const uEl=document.getElementById('family-phone');
+        const pEl=document.getElementById('family-pass');
+        if(uEl) uEl.value=user;
+        if(pEl) pEl.value=pass;
+        enterApp(); return;
+      }
     }
   }catch(e){}
 }
@@ -2873,5 +2903,4 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 </body>
 </html>
-
 
