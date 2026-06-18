@@ -362,21 +362,21 @@ const DEFAULT_DB={families:[{
   docs:[
     {name:'תלוש משכורת - יוני 2025.pdf',type:'salary',uploadedAt:'2025-06-01',analyzed:true,
      aiType:'salary',aiIncome:18500,aiExpense:0,aiBalance:0,aiOneTime:0,aiCreditPayments:0,
-     aiCategories:{},aiSummary:'משכורת חודשית ברוטו 24,200 ₪, נטו 18,500 ₪'},
+     aiCategories:{},aiSummary:'משכורת חודשית ברוטו 24,200 ש"ח, נטו 18,500 ש"ח'},
     {name:'תדפיס בנק - מאי 2025.pdf',type:'bank',uploadedAt:'2025-06-01',analyzed:true,
      aiType:'bank',aiIncome:10200,aiExpense:0,aiBalance:42000,aiOneTime:1200,aiCreditPayments:12800,
-     aiCategories:{},aiSummary:'הכנסות 10,200 ₪, חיוב אשראי 12,800 ₪, יתרה 42,000 ₪'},
+     aiCategories:{},aiSummary:'הכנסות 10,200 ש"ח, חיוב אשראי 12,800 ש"ח, יתרה 42,000 ש"ח'},
     {name:'דף אשראי ויזה - אפריל 2025.pdf',type:'credit',uploadedAt:'2025-06-01',analyzed:true,
      aiType:'credit',aiIncome:0,aiExpense:11400,aiBalance:0,aiOneTime:800,aiCreditPayments:0,
      aiCategories:{מזון:3200,דלק:1800,מסעדות:1400,ביגוד:650,בידור:1200,שונות:3150},
-     aiSummary:'סך חיוב 11,400 ₪, כולל רכישה חד-פעמית 800 ₪'},
+     aiSummary:'סך חיוב 11,400 ש"ח, כולל רכישה חד-פעמית 800 ש"ח'},
     {name:'דף אשראי ויזה - מאי 2025.pdf',type:'credit',uploadedAt:'2025-06-01',analyzed:true,
      aiType:'credit',aiIncome:0,aiExpense:13200,aiBalance:0,aiOneTime:0,aiCreditPayments:0,
      aiCategories:{מזון:3400,דלק:2100,מסעדות:1600,ביגוד:800,בידור:1800,שונות:3500},
-     aiSummary:'סך חיוב 13,200 ₪'},
+     aiSummary:'סך חיוב 13,200 ש"ח'},
     {name:'הסכם משכנתא.pdf',type:'mortgage',uploadedAt:'2025-06-01',analyzed:true,
      aiType:'mortgage',aiIncome:0,aiExpense:11150,aiBalance:0,aiOneTime:0,aiCreditPayments:0,
-     aiCategories:{},aiSummary:'החזר חודשי 11,150 ₪, יתרת חוב 680,000 ₪'},
+     aiCategories:{},aiSummary:'החזר חודשי 11,150 ש"ח, יתרת חוב 680,000 ש"ח'},
   ],
   months:[],incomes:[],expenses:[],
   categories:{מזון:3300,דלק:1950,מסעדות:1500,ביגוד:725,בידור:1500,שונות:3325},
@@ -397,11 +397,8 @@ function loadDB(){
   try{
     const r=localStorage.getItem(DB_KEY);
     const db=r?JSON.parse(r):JSON.parse(JSON.stringify(DEFAULT_DB));
-    // תמיד ודא שמשפחת הדוגמא קיימת
-    const demoExists=db.families.some(f=>f.id==='fam_demo');
-    if(!demoExists){
-      const demo=JSON.parse(JSON.stringify(DEFAULT_DB.families[0]));
-      db.families.unshift(demo);
+    if(!db.families.some(f=>f.id==='fam_demo')){
+      db.families.unshift(JSON.parse(JSON.stringify(DEFAULT_DB.families[0])));
     }
     return db;
   }catch(e){return JSON.parse(JSON.stringify(DEFAULT_DB));}
