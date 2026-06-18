@@ -393,7 +393,19 @@ const DEFAULT_DB={families:[{
   messages:[{from:'יועץ - דרור',text:'ברוכים הבאים! אשמח לעזור לכם להגיע לשקט כלכלי.',time:'עכשיו'}],
 }]};
 
-function loadDB(){try{const r=localStorage.getItem(DB_KEY);return r?JSON.parse(r):JSON.parse(JSON.stringify(DEFAULT_DB));}catch(e){return JSON.parse(JSON.stringify(DEFAULT_DB));}}
+function loadDB(){
+  try{
+    const r=localStorage.getItem(DB_KEY);
+    const db=r?JSON.parse(r):JSON.parse(JSON.stringify(DEFAULT_DB));
+    // תמיד ודא שמשפחת הדוגמא קיימת
+    const demoExists=db.families.some(f=>f.id==='fam_demo');
+    if(!demoExists){
+      const demo=JSON.parse(JSON.stringify(DEFAULT_DB.families[0]));
+      db.families.unshift(demo);
+    }
+    return db;
+  }catch(e){return JSON.parse(JSON.stringify(DEFAULT_DB));}
+}
 let _saveCount=0;
 function saveDB(db){
   try{
