@@ -1,0 +1,7 @@
+===== הוראות פריסה ל-Vercel =====
+
+לאחר שה-repository נוצר ב-GitHub, עבור ל-vercel.com
+התחבר עם חשבון GitHub
+ייבא את ה-repository "shket-kalkali"
+הוסף environment variable בשם CLAUDE_API_KEY עם המפתח שלך
+לחץ Deploy
