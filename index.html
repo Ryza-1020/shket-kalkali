@@ -339,10 +339,24 @@ const firebaseConfig={
 firebase.initializeApp(firebaseConfig);
 const db_fs=firebase.firestore();
 async function saveDBCloud(db){
-  try{await db_fs.collection('shket').doc('main').set({data:JSON.stringify(db)});}catch(e){console.warn('cloud save failed',e);}
+  try{
+    await db_fs.collection('shket').doc('main').set({data:JSON.stringify(db)});
+    console.log('✅ Cloud save OK');
+    showToast('☁️ נתונים נשמרו לענן');
+  }catch(e){
+    console.error('❌ Cloud save FAILED',e);
+    showToast('⚠️ שגיאת ענן: '+e.message);
+  }
 }
 async function loadDBCloud(){
-  try{const d=await db_fs.collection('shket').doc('main').get();if(d.exists)return JSON.parse(d.data().data);}catch(e){console.warn('cloud load failed',e);}
+  try{
+    const d=await db_fs.collection('shket').doc('main').get();
+    if(d.exists){console.log('✅ Cloud load OK');return JSON.parse(d.data().data);}
+    console.log('ℹ️ Cloud empty');
+  }catch(e){
+    console.error('❌ Cloud load FAILED',e);
+    showToast('⚠️ שגיאת טעינה מענן: '+e.message);
+  }
   return null;
 }
 // ── CONSTANTS & DB ────────────────────────────────────────────────────────────
