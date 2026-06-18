@@ -7,6 +7,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -325,6 +327,24 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--gray);color:var(--
 <div class="toast" id="toast-el"></div>
 
 <script>
+// ── FIREBASE ──────────────────────────────────────────────────────────────────
+const firebaseConfig={
+  apiKey:"AIzaSyBcXQsDNJK3kzEZXFxdij_cXuuYVX7q6Vo",
+  authDomain:"shket-kalkali.firebaseapp.com",
+  projectId:"shket-kalkali",
+  storageBucket:"shket-kalkali.firebasestorage.app",
+  messagingSenderId:"453450371235",
+  appId:"1:453450371235:web:3d16bc8c1e840a7245ef16"
+};
+firebase.initializeApp(firebaseConfig);
+const db_fs=firebase.firestore();
+async function saveDBCloud(db){
+  try{await db_fs.collection('shket').doc('main').set({data:JSON.stringify(db)});}catch(e){console.warn('cloud save failed',e);}
+}
+async function loadDBCloud(){
+  try{const d=await db_fs.collection('shket').doc('main').get();if(d.exists)return JSON.parse(d.data().data);}catch(e){console.warn('cloud load failed',e);}
+  return null;
+}
 // ── CONSTANTS & DB ────────────────────────────────────────────────────────────
 const CLAUDE_KEY='';
 const ADVISOR_EMAIL='israelryza@gmail.com';
@@ -389,10 +409,20 @@ function saveDB(db){
       const ts=new Date().toISOString().replace(/[:.]/g,'-').slice(0,16);
       localStorage.setItem(DB_KEY+'_auto_'+ts,JSON.stringify(db));
     }
+    saveDBCloud(db);
   }catch(e){console.error('saveDB:',e);}
 }
 
+// טען מהענן בהפעלה ראשונה
 let DB=loadDB();
+loadDBCloud().then(cloudDB=>{
+  if(cloudDB){
+    if(!cloudDB.families.some(f=>f.id==='fam_demo'))cloudDB.families.unshift(JSON.parse(JSON.stringify(DEMO_FAMILY)));
+    DB=cloudDB;
+    localStorage.setItem(DB_KEY,JSON.stringify(DB));
+    try{tryAutoLogin();}catch(e){}
+  }
+}).catch(()=>{});
 let currentFamily=null;
 let chatHistory=[];
 let chartTrend=null,chartPie=null;
@@ -706,7 +736,6 @@ ${f.assets&&f.assets.length?'נכסים:\n'+f.assets.map(a=>`• ${a.name}: ${fm
       method:'POST',
       headers:{
         'Content-Type':'application/json',
-        'anthropic-version':'2023-06-01',
       },
       body:JSON.stringify({
         model:'claude-opus-4-8',
@@ -987,7 +1016,6 @@ async function sendToClaude(content, isImage){
       method:'POST',
       headers:{
         'Content-Type':'application/json',
-        'anthropic-version':'2023-06-01',
       },
       body:JSON.stringify({model:'claude-opus-4-8',max_tokens:1024,messages:[{role:'user',content:msgContent}]})
     });
@@ -2889,6 +2917,5 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 </body>
 </html>
-
 
 
