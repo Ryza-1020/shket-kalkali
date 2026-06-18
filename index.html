@@ -329,6 +329,57 @@ const DB_KEY='shkDb';
 const SESSION_KEY='shketSession';
 
 const DEFAULT_DB={families:[{
+  id:'fam_demo',name:'ישראלי',username:'demo',password:'1234',
+  status:'active',since:'ינו 2025',members:'משפחת דוגמא',
+  termsAccepted:true,onboardingDone:true,
+  score:74,
+  kpi:{income:28500,expense:23200,cashflow:5300,balance:74},
+  goals:[
+    {name:'קרן חירום',icon:'🛡️',bg:'#f0fdf4',target:50000,current:18000,date:'דצמ 2026'},
+    {name:'חופשה משפחתית',icon:'✈️',bg:'#fdf4ff',target:12000,current:4800,date:'יול 2026'},
+  ],
+  tasks:[
+    {text:'להעביר תשלום ביטוח לאומי',done:false,prio:'h'},
+    {text:'לבדוק מחזור משכנתא',done:false,prio:'m'},
+    {text:'לפתוח קרן השתלמות',done:true,prio:'l'},
+  ],
+  budget:[
+    {cat:'מזון',budgetGoal:3500,actual:3200},
+    {cat:'דלק ותחבורה',budgetGoal:2000,actual:2100},
+    {cat:'בידור',budgetGoal:1500,actual:1800},
+    {cat:'ביגוד',budgetGoal:1000,actual:650},
+    {cat:'משכנתא',budgetGoal:11150,actual:11150},
+  ],
+  assets:[
+    {name:'דירה',type:'real_estate',value:1850000,date:'2020'},
+    {name:'קרן השתלמות',type:'savings',value:95000,date:'2024'},
+    {name:'פנסיה',type:'pension',value:320000,date:'2024'},
+  ],
+  docs:[
+    {name:'תלוש משכורת - יוני 2025.pdf',type:'salary',uploadedAt:'2025-06-01',analyzed:true,
+     aiType:'salary',aiIncome:18500,aiExpense:0,aiBalance:0,aiOneTime:0,aiCreditPayments:0,
+     aiCategories:{},aiSummary:'משכורת חודשית ברוטו 24,200 ₪, נטו 18,500 ₪'},
+    {name:'תדפיס בנק - מאי 2025.pdf',type:'bank',uploadedAt:'2025-06-01',analyzed:true,
+     aiType:'bank',aiIncome:10200,aiExpense:0,aiBalance:42000,aiOneTime:1200,aiCreditPayments:12800,
+     aiCategories:{},aiSummary:'הכנסות 10,200 ₪, חיוב אשראי 12,800 ₪, יתרה 42,000 ₪'},
+    {name:'דף אשראי ויזה - אפריל 2025.pdf',type:'credit',uploadedAt:'2025-06-01',analyzed:true,
+     aiType:'credit',aiIncome:0,aiExpense:11400,aiBalance:0,aiOneTime:800,aiCreditPayments:0,
+     aiCategories:{מזון:3200,דלק:1800,מסעדות:1400,ביגוד:650,בידור:1200,שונות:3150},
+     aiSummary:'סך חיוב 11,400 ₪, כולל רכישה חד-פעמית של 800 ₪'},
+    {name:'דף אשראי ויזה - מאי 2025.pdf',type:'credit',uploadedAt:'2025-06-01',analyzed:true,
+     aiType:'credit',aiIncome:0,aiExpense:13200,aiBalance:0,aiOneTime:0,aiCreditPayments:0,
+     aiCategories:{מזון:3400,דלק:2100,מסעדות:1600,ביגוד:800,בידור:1800,שונות:3500},
+     aiSummary:'סך חיוב 13,200 ₪'},
+    {name:'הסכם משכנתא.pdf',type:'mortgage',uploadedAt:'2025-06-01',analyzed:true,
+     aiType:'mortgage',aiIncome:0,aiExpense:11150,aiBalance:0,aiOneTime:0,aiCreditPayments:0,
+     aiCategories:{},aiSummary:'החזר חודשי 11,150 ₪, יתרת חוב 680,000 ₪'},
+  ],
+  months:[],incomes:[],expenses:[],
+  categories:{מזון:3300,דלק:1950,מסעדות:1500,ביגוד:725,בידור:1500,שונות:3325},
+  messages:[
+    {from:'יועץ - דרור',text:'ברוכים הבאים למערכת שקט כלכלי! זוהי משפחת דוגמא להדגמת המערכת.',time:'עכשיו'},
+  ],
+},{
   id:'fam_cohen',name:'כהן',username:'cohen',password:'1234',
   status:'active',since:'ינו 2025',members:'לקוח',
   termsAccepted:false,onboardingDone:false,
@@ -2822,4 +2873,5 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 </body>
 </html>
+
 
