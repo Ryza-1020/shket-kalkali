@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שקט כלכלי – פורטל לקוחות</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1a3a5c;
+  --blue-mid:#2563a8;
+  --teal:#0d9488;
+  --teal-light:#14b8a6;
+  --teal-bg:#f0fdfa;
+  --gray:#f8fafc;
+  --gray2:#f1f5f9;
+  --gray3:#e2e8f0;
+  --gray4:#94a3b8;
+  --gray5:#64748b;
+  --text:#1e293b;
+  --text2:#475569;
+  --white:#ffffff;
+  --shadow:0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg:0 8px 32px rgba(0,0,0,0.12);
+  --radius:12px;
+  --radius-lg:18px;
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--gray);color:var(--text);min-height:100vh;direction:rtl}
+.hidden{display:none!important}
+
+/* ===== LOGIN ===== */
+#login-screen{
+  min-height:100vh;
+  background:linear-gradient(135deg,var(--blue) 0%,#0f4c81 50%,var(--teal) 100%);
+  display:flex;flex-direction:column;align-items:center;padding:40px 24px 60px;
+}
+#promo-section{width:100%;max-width:680px;margin-top:36px;background:#fff;border-radius:22px;padding:28px 24px;box-shadow:0 8px 40px rgba(0,0,0,0.2)}
+.promo-heading{font-size:19px;font-weight:700;color:var(--blue);text-align:center;margin-bottom:5px}
+.promo-sub{font-size:13px;color:var(--gray5);text-align:center;margin-bottom:20px}
+.pval-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:18px}
+.pval-card{background:var(--teal-bg);border:1px solid #99f6e4;border-radius:11px;padding:13px;text-align:center}
+.pval-icon{font-size:24px;margin-bottom:5px;display:block}
+.pval-title{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:2px}
+.pval-sub{font-size:11px;color:var(--gray5);line-height:1.4}
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.ba-box{border-radius:11px;padding:13px;border:1.5px solid var(--gray3)}
+.ba-box.ba-after{border-color:#0d9488;background:#f0fdfa}
+.ba-label{font-size:11px;font-weight:700;margin-bottom:7px}
+.ba-tag{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;display:inline-block;margin:2px}
+.ba-quote{font-size:11px;color:var(--gray5);margin-top:7px;line-height:1.5;font-style:italic}
+.p-step-btn{background:var(--gray2);border:1.5px solid var(--gray3);border-radius:9px;padding:9px 10px;cursor:pointer;transition:all 0.2s;text-align:right;color:var(--text);font-family:inherit}
+.p-step-btn.sp-active{background:var(--teal-bg);border-color:var(--teal)}
+.p-step-num{font-size:10px;color:var(--gray4);margin-bottom:1px}
+.p-step-title{font-size:12px;font-weight:700;color:var(--blue)}
+.p-step-sub{font-size:10px;color:var(--gray5);margin-top:1px}
+.p-demo-panel{background:var(--gray);border:1px solid var(--gray3);border-radius:11px;padding:14px;min-height:140px;margin-top:10px}
+.p-demo-row{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--gray3);border-radius:8px;padding:9px 12px;margin-bottom:7px;animation:pfade 0.3s ease both}
+@keyframes pfade{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+.p-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.p-stat-box{background:var(--gray);border-radius:11px;padding:13px;text-align:center}
+.p-stat-num{font-size:26px;font-weight:700;color:var(--teal)}
+.p-stat-lbl{font-size:11px;color:var(--gray5);margin-top:2px}
+.p-cta{width:100%;background:linear-gradient(135deg,var(--teal),var(--blue-mid));color:#fff;border:none;border-radius:11px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity 0.2s;margin-top:6px}
+.p-cta:hover{opacity:0.88}
+.p-app-link{width:100%;background:#fff;color:var(--blue);border:2px solid var(--blue);border-radius:11px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;margin-top:10px;text-align:center;display:block;text-decoration:none}
+.p-app-link:hover{background:var(--blue);color:#fff}
+.login-logo{text-align:center;margin-bottom:32px}
+.login-logo .logo-circle{
+  width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 12px;
+  font-size:36px;border:2px solid rgba(255,255,255,0.3);
+}
+.login-logo h1{color:#fff;font-size:26px;font-weight:700;letter-spacing:-0.5px}
+.login-logo p{color:rgba(255,255,255,0.75);font-size:14px;margin-top:4px}
+.login-card{
+  background:#fff;border-radius:var(--radius-lg);padding:32px 28px;
+  width:100%;max-width:380px;box-shadow:var(--shadow-lg);
+}
+.login-tabs{display:flex;gap:4px;background:var(--gray2);border-radius:10px;padding:4px;margin-bottom:24px}
+.login-tab{
+  flex:1;padding:9px;text-align:center;border-radius:8px;font-size:14px;
+  cursor:pointer;transition:all 0.2s;color:var(--gray5);font-weight:500;border:none;background:transparent;
+}
+.login-tab.active{background:#fff;color:var(--blue);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.field-label{font-size:13px;color:var(--gray5);font-weight:600;margin-bottom:6px;display:block}
+.field-input{
+  width:100%;padding:12px 14px;border:1.5px solid var(--gray3);border-radius:10px;
+  font-size:15px;color:var(--text);outline:none;transition:border 0.2s;background:#fff;
+  font-family:inherit;direction:rtl;
+}
+.field-input:focus{border-color:var(--teal)}
+.pin-row{display:flex;gap:10px;justify-content:center;margin:8px 0}
+.pin-digit{
+  width:56px;height:64px;border:2px solid var(--gray3);border-radius:12px;
+  font-size:28px;text-align:center;font-weight:700;color:var(--blue);
+  outline:none;transition:border 0.2s;direction:ltr;
+}
+.pin-digit:focus{border-color:var(--teal)}
+.btn-primary{
+  width:100%;padding:14px;background:linear-gradient(135deg,var(--teal),var(--blue-mid));
+  color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;
+  cursor:pointer;transition:opacity 0.2s;font-family:inherit;margin-top:8px;
+}
+.btn-primary:hover{opacity:0.92}
+.login-footer{text-align:center;margin-top:16px;font-size:13px;color:var(--gray4)}
+.field-group{margin-bottom:18px}
+.advisor-badge{
+  display:inline-flex;align-items:center;gap:6px;background:var(--teal-bg);
+  color:var(--teal);padding:6px 12px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:20px;
+}
+
+/* ===== APP SHELL ===== */
+#app-shell{display:flex;flex-direction:column;min-height:100vh;max-width:480px;margin:0 auto;position:relative}
+
+/* Top Bar */
+.top-bar{
+  background:var(--white);border-bottom:1px solid var(--gray3);
+  padding:14px 16px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.top-bar-logo{font-size:17px;font-weight:700;color:var(--blue);letter-spacing:-0.3px}
+.top-bar-logo span{color:var(--teal)}
+.top-bar-right{display:flex;align-items:center;gap:10px}
+.avatar{
+  width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--blue-mid));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;cursor:pointer;
+}
+.notif-btn{
+  width:36px;height:36px;border-radius:50%;background:var(--gray2);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;font-size:18px;position:relative;
+}
+.notif-dot{
+  position:absolute;top:6px;right:6px;width:8px;height:8px;
+  background:#ef4444;border-radius:50%;border:2px solid #fff;
+}
+
+/* Page Content */
+.page-content{flex:1;overflow-y:auto;padding:16px;padding-bottom:80px}
+
+/* Bottom Nav */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;background:#fff;border-top:1px solid var(--gray3);
+  display:flex;justify-content:space-around;padding:8px 0 env(safe-area-inset-bottom);
+  z-index:100;
+}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:6px 12px;cursor:pointer;border:none;background:transparent;
+  color:var(--gray4);transition:color 0.2s;min-width:48px;
+}
+.nav-item.active{color:var(--teal)}
+.nav-item .nav-icon{font-size:22px;line-height:1}
+.nav-item .nav-label{font-size:10px;font-weight:600}
+
+/* ===== CARDS ===== */
+.card{background:#fff;border-radius:var(--radius-lg);padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.card-sm{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
+.section-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:14px}
+.section-sub{font-size:13px;color:var(--gray5);margin-top:2px;font-weight:400}
+
+/* ===== DASHBOARD ===== */
+.greeting{font-size:20px;font-weight:700;color:var(--text);margin-bottom:2px}
+.greeting-sub{font-size:14px;color:var(--gray5);margin-bottom:20px}
+
+/* Score Circle */
+.score-card{
+  background:linear-gradient(135deg,var(--blue) 0%,#1a5fa8 50%,var(--teal) 100%);
+  border-radius:var(--radius-lg);padding:28px 20px;text-align:center;
+  box-shadow:0 8px 32px rgba(26,58,92,0.35);margin-bottom:14px;position:relative;overflow:hidden;
+}
+.score-card::before{
+  content:'';position:absolute;top:-40px;left:-40px;
+  width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.05);
+}
+.score-label{color:rgba(255,255,255,0.8);font-size:13px;font-weight:600;margin-bottom:12px;letter-spacing:0.5px}
+.score-ring{
+  width:130px;height:130px;border-radius:50%;margin:0 auto 14px;position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.score-ring svg{position:absolute;top:0;left:0;transform:rotate(-90deg)}
+.score-number{
+  font-size:44px;font-weight:800;color:#fff;line-height:1;position:relative;z-index:1;
+}
+.score-number sup{font-size:18px;font-weight:600;vertical-align:super}
+.score-tag{
+  display:inline-block;background:rgba(255,255,255,0.15);color:#fff;
+  padding:5px 16px;border-radius:20px;font-size:13px;font-weight:600;
+  border:1px solid rgba(255,255,255,0.3);margin-bottom:14px;
+}
+.score-factors{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.score-factor{
+  background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.9);
+  padding:4px 10px;border-radius:8px;font-size:11px;font-weight:600;
+  border:1px solid rgba(255,255,255,0.2);
+}
+
+/* KPI Grid */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.kpi-card{
+  background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);
+  border-right:3px solid var(--teal);
+}
+.kpi-card.neg{border-right-color:#ef4444}
+.kpi-card.warn{border-right-color:#f59e0b}
+.kpi-label{font-size:11px;color:var(--gray5);font-weight:600;margin-bottom:4px}
+.kpi-value{font-size:20px;font-weight:800;color:var(--text)}
+.kpi-change{font-size:11px;margin-top:3px;font-weight:600}
+.kpi-change.up{color:#16a34a}
+.kpi-change.down{color:#ef4444}
+.kpi-icon{font-size:20px;margin-bottom:6px}
+
+/* Alerts */
+.alert{
+  display:flex;align-items:flex-start;gap:10px;padding:12px 14px;
+  border-radius:var(--radius);margin-bottom:8px;
+}
+.alert.warn{background:#fffbeb;border:1px solid #fcd34d}
+.alert.info{background:#eff6ff;border:1px solid #93c5fd}
+.alert.success{background:#f0fdf4;border:1px solid #86efac}
+.alert.danger{background:#fef2f2;border:1px solid #fca5a5}
+.alert-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.alert-text{font-size:13px;color:var(--text2);flex:1}
+.alert-text strong{color:var(--text);font-weight:700}
+
+/* ===== CHARTS ===== */
+.chart-wrap{position:relative;height:180px}
+.pie-wrap{position:relative;height:200px}
+
+/* ===== INSIGHTS ===== */
+.insight-card{
+  background:#fff;border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);
+  margin-bottom:12px;border-top:4px solid var(--teal);
+}
+.insight-card.warn{border-top-color:#f59e0b}
+.insight-card.danger{border-top-color:#ef4444}
+.insight-card.success{border-top-color:#22c55e}
+.insight-card.info{border-top-color:#3b82f6}
+.insight-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.insight-icon{font-size:24px}
+.insight-title{font-size:15px;font-weight:700;color:var(--text)}
+.insight-priority{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:700;margin-right:auto}
+.priority-high{background:#fef2f2;color:#dc2626}
+.priority-med{background:#fffbeb;color:#d97706}
+.priority-low{background:#f0fdf4;color:#16a34a}
+.insight-body{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px}
+.insight-rec{
+  background:var(--gray2);border-radius:8px;padding:10px 12px;
+  font-size:13px;color:var(--blue);font-weight:600;display:flex;align-items:center;gap:6px;
+}
+
+/* ===== CHAT ===== */
+.chat-container{display:flex;flex-direction:column;height:calc(100vh - 130px)}
+.chat-messages{flex:1;overflow-y:auto;padding:12px 0}
+.chat-msg{display:flex;align-items:flex-end;gap:8px;margin-bottom:14px}
+.chat-msg.user{flex-direction:row-reverse}
+.chat-bubble{
+  max-width:80%;padding:12px 15px;border-radius:18px;font-size:14px;line-height:1.5;
+}
+.chat-msg.ai .chat-bubble{background:#fff;box-shadow:var(--shadow);border-bottom-right-radius:4px;color:var(--text)}
+.chat-msg.user .chat-bubble{background:linear-gradient(135deg,var(--teal),var(--blue-mid));color:#fff;border-bottom-left-radius:4px}
+.chat-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px}
+.ai-avatar{background:linear-gradient(135deg,var(--teal),var(--blue));color:#fff;font-size:13px;font-weight:700}
+.user-avatar{background:var(--gray3)}
+.chat-time{font-size:10px;color:var(--gray4);padding:0 4px}
+.chat-input-wrap{
+  background:#fff;border-top:1px solid var(--gray3);padding:12px;
+  display:flex;gap:8px;align-items:flex-end;
+}
+.chat-input{
+  flex:1;border:1.5px solid var(--gray3);border-radius:24px;padding:10px 16px;
+  font-size:14px;resize:none;font-family:inherit;outline:none;max-height:100px;direction:rtl;
+  transition:border 0.2s;
+}
+.chat-input:focus{border-color:var(--teal)}
+.chat-send{
+  width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--blue-mid));
+  border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;transition:opacity 0.2s;
+}
+.chat-send:hover{opacity:0.9}
+.quick-chips{display:flex;gap:6px;flex-wrap:wrap;padding:8px 0 4px}
+.chip{
+  padding:6px 12px;background:var(--gray2);border-radius:20px;font-size:12px;
+  cursor:pointer;border:1px solid var(--gray3);color:var(--text2);transition:all 0.2s;white-space:nowrap;
+}
+.chip:hover{background:var(--teal-bg);border-color:var(--teal);color:var(--teal)}
+.typing-dots{display:flex;gap:4px;align-items:center;padding:12px 15px;background:#fff;border-radius:18px;box-shadow:var(--shadow)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--gray4);animation:bounce 1.2s infinite}
+.dot:nth-child(2){animation-delay:0.2s}
+.dot:nth-child(3){animation-delay:0.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+
+/* ===== DOCUMENTS ===== */
+.upload-zone{
+  border:2px dashed var(--gray3);border-radius:var(--radius-lg);padding:32px 20px;
+  text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:16px;
+  background:var(--gray2);
+}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--teal);background:var(--teal-bg)}
+.upload-icon{font-size:40px;margin-bottom:8px}
+.upload-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px}
+.upload-sub{font-size:13px;color:var(--gray5)}
+.upload-formats{font-size:11px;color:var(--gray4);margin-top:8px}
+.doc-list{display:flex;flex-direction:column;gap:8px}
+.doc-item{
+  background:#fff;border-radius:var(--radius);padding:12px 14px;
+  display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);
+}
+.doc-icon{
+  width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.doc-icon.bank{background:#eff6ff}
+.doc-icon.salary{background:#f0fdf4}
+.doc-icon.credit{background:#fdf4ff}
+.doc-icon.loan{background:#fffbeb}
+.doc-meta{flex:1;min-width:0}
+.doc-name{font-size:14px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.doc-info{font-size:12px;color:var(--gray5);margin-top:2px}
+.doc-status{font-size:11px;padding:3px 8px;border-radius:6px;font-weight:700;flex-shrink:0}
+.status-done{background:#dcfce7;color:#16a34a}
+.status-proc{background:#fef9c3;color:#a16207}
+.status-err{background:#fee2e2;color:#dc2626}
+
+/* ===== BUDGET ===== */
+.budget-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.month-select{
+  background:#fff;border:1.5px solid var(--gray3);border-radius:10px;padding:8px 12px;
+  font-size:14px;color:var(--text);outline:none;font-family:inherit;cursor:pointer;
+}
+.budget-table{width:100%;border-collapse:collapse}
+.budget-table th{font-size:12px;color:var(--gray5);font-weight:700;padding:8px 10px;border-bottom:2px solid var(--gray3);text-align:right}
+.budget-table td{font-size:13px;padding:10px 10px;border-bottom:1px solid var(--gray3);vertical-align:middle}
+.budget-bar-wrap{height:6px;background:var(--gray3);border-radius:3px;overflow:hidden;width:60px}
+.budget-bar{height:100%;border-radius:3px;transition:width 0.5s}
+.budget-bar.ok{background:var(--teal)}
+.budget-bar.warn{background:#f59e0b}
+.budget-bar.over{background:#ef4444}
+.diff-pos{color:#16a34a;font-weight:700}
+.diff-neg{color:#ef4444;font-weight:700}
+
+/* ===== GOALS ===== */
+.goal-card{background:#fff;border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);margin-bottom:12px}
+.goal-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.goal-icon{
+  width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;
+}
+.goal-meta{flex:1}
+.goal-name{font-size:15px;font-weight:700;color:var(--text)}
+.goal-date{font-size:12px;color:var(--gray5);margin-top:2px}
+.goal-pct{font-size:18px;font-weight:800;color:var(--teal)}
+.progress-wrap{margin-bottom:10px}
+.progress-bar-bg{height:10px;background:var(--gray3);border-radius:5px;overflow:hidden}
+.progress-bar-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--teal),var(--blue-mid));transition:width 0.8s}
+.goal-amounts{display:flex;justify-content:space-between;font-size:12px;color:var(--gray5);margin-top:5px}
+.goal-amounts strong{color:var(--text);font-weight:700}
+.goal-est{font-size:12px;color:var(--teal);font-weight:600;margin-top:6px}
+
+/* ===== ADVISOR PANEL ===== */
+.advisor-panel{background:#fff;border-radius:var(--radius-lg);padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.advisor-panel h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;border-bottom:1px solid var(--gray3);padding-bottom:10px}
+.msg-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray3)}
+.msg-item:last-child{border-bottom:none}
+.msg-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.msg-content{flex:1}
+.msg-name{font-size:13px;font-weight:700;color:var(--text)}
+.msg-text{font-size:13px;color:var(--text2);margin-top:2px}
+.msg-time{font-size:11px;color:var(--gray4);margin-top:2px}
+.task-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray3)}
+.task-item:last-child{border-bottom:none}
+.task-check{
+  width:22px;height:22px;border-radius:6px;border:2px solid var(--gray3);
+  cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.task-check.done{background:var(--teal);border-color:var(--teal);color:#fff}
+.task-text{font-size:14px;color:var(--text);flex:1}
+.task-text.done{text-decoration:line-through;color:var(--gray4)}
+.task-prio{font-size:11px;padding:2px 7px;border-radius:6px;font-weight:700;flex-shrink:0}
+.prio-h{background:#fee2e2;color:#dc2626}
+.prio-m{background:#fef9c3;color:#a16207}
+.prio-l{background:#dcfce7;color:#16a34a}
+
+/* ===== ADMIN PANEL ===== */
+#admin-shell{min-height:100vh;background:var(--gray)}
+.admin-sidebar{
+  background:var(--blue);color:#fff;padding:20px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.admin-logo{font-size:18px;font-weight:800;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.15)}
+.admin-logo span{color:var(--teal-light)}
+.admin-nav-item{
+  padding:10px 12px;border-radius:10px;font-size:14px;cursor:pointer;
+  color:rgba(255,255,255,0.75);transition:all 0.2s;display:flex;align-items:center;gap:8px;border:none;background:transparent;
+  font-family:inherit;text-align:right;
+}
+.admin-nav-item:hover{background:rgba(255,255,255,0.1);color:#fff}
+.admin-nav-item.active{background:rgba(20,184,166,0.25);color:#fff;font-weight:600}
+.admin-main{flex:1;padding:24px;overflow-y:auto}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.admin-header h1{font-size:22px;font-weight:800;color:var(--text)}
+.btn-new{
+  background:linear-gradient(135deg,var(--teal),var(--blue-mid));color:#fff;
+  border:none;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;
+  cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;
+}
+.family-card-admin{
+  background:#fff;border-radius:var(--radius-lg);padding:16px 18px;
+  box-shadow:var(--shadow);margin-bottom:10px;display:flex;align-items:center;gap:14px;
+  cursor:pointer;transition:box-shadow 0.2s;border:1.5px solid transparent;
+}
+.family-card-admin:hover{box-shadow:var(--shadow-lg);border-color:var(--teal)}
+.family-avatar-big{
+  width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));
+  color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;
+}
+.family-info{flex:1}
+.family-name{font-size:16px;font-weight:700;color:var(--text)}
+.family-sub{font-size:13px;color:var(--gray5);margin-top:2px}
+.family-score{text-align:center}
+.family-score-num{font-size:22px;font-weight:800;color:var(--teal)}
+.family-score-label{font-size:10px;color:var(--gray4);font-weight:600}
+.family-badges{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.family-badge{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:700}
+.badge-active{background:#dcfce7;color:#16a34a}
+.badge-warn{background:#fef9c3;color:#a16207}
+.badge-new{background:#eff6ff;color:#1d4ed8}
+.admin-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:24px}
+.admin-stat{background:#fff;border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow);text-align:center}
+.admin-stat-num{font-size:30px;font-weight:800;color:var(--blue)}
+.admin-stat-label{font-size:12px;color:var(--gray5);font-weight:600;margin-top:4px}
+
+/* Modal */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;
+  display:flex;align-items:flex-end;justify-content:center;padding:0;
+}
+.modal-box{
+  background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:500px;
+  padding:24px;max-height:90vh;overflow-y:auto;animation:slideUp 0.3s ease;
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;background:var(--gray3);border-radius:2px;margin:0 auto 20px}
+.modal-title{font-size:18px;font-weight:800;color:var(--text);margin-bottom:20px}
+.modal-close{
+  position:absolute;top:16px;left:16px;width:32px;height:32px;
+  border-radius:50%;border:none;background:var(--gray2);cursor:pointer;font-size:16px;
+}
+
+/* Desktop adjustments */
+@media(min-width:768px){
+  #app-shell{max-width:100%}
+  .kpi-grid{grid-template-columns:repeat(4,1fr)}
+  .bottom-nav{position:static;border-top:none;border-right:1px solid var(--gray3);
+    flex-direction:column;justify-content:flex-start;padding:20px 0;
+    width:80px;height:100vh;position:fixed;left:0;top:0;}
+  .nav-item{flex-direction:column;padding:14px 8px}
+  .page-content{padding-bottom:20px;margin-right:80px}
+  .top-bar{margin-right:80px}
+  #admin-shell{display:flex}
+  .admin-sidebar{width:220px;min-height:100vh;flex-shrink:0}
+}
+
+.tab-content{animation:fadeIn 0.2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* Search bar */
+.search-bar{
+  display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--gray3);
+  border-radius:12px;padding:10px 14px;margin-bottom:14px;
+}
+.search-bar input{border:none;outline:none;flex:1;font-size:14px;font-family:inherit;direction:rtl}
+.search-bar span{font-size:18px;color:var(--gray4)}
+
+/* Pie legend */
+.pie-legend{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:13px}
+.legend-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+
+/* Tooltip / Toast */
+.toast{
+  position:fixed;top:20px;left:50%;transform:translateX(-50%);
+  background:var(--blue);color:#fff;padding:12px 24px;border-radius:12px;
+  font-size:14px;font-weight:600;z-index:9999;box-shadow:var(--shadow-lg);
+  animation:fadeIn 0.3s ease;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="login-screen">
+  <div class="login-logo">
+    <div class="logo-circle">🏡</div>
+    <h1>שקט כלכלי</h1>
+    <p>ניהול כלכלת משפחה חכם</p>
+  </div>
+  <div class="login-card">
+    <div class="login-tabs">
+      <button class="login-tab active" onclick="switchLoginTab('family')">כניסת משפחה</button>
+      <button class="login-tab" onclick="switchLoginTab('advisor')">כניסת יועץ</button>
+    </div>
+
+    <!-- Family Login -->
+    <div id="family-login">
+      <div class="field-group">
+        <label class="field-label">טלפון / אימייל</label>
+        <input class="field-input" type="text" placeholder="050-000-0000 / name@email.com" id="family-phone">
+      </div>
+      <div class="field-group">
+        <label class="field-label" style="text-align:center;display:block;margin-bottom:12px">קוד אישי (4 ספרות)</label>
+        <div class="pin-row">
+          <input class="pin-digit" type="password" maxlength="1" inputmode="numeric" id="p1">
+          <input class="pin-digit" type="password" maxlength="1" inputmode="numeric" id="p2">
+          <input class="pin-digit" type="password" maxlength="1" inputmode="numeric" id="p3">
+          <input class="pin-digit" type="password" maxlength="1" inputmode="numeric" id="p4">
+        </div>
+      </div>
+      <button class="btn-primary" onclick="loginFamily()">כניסה לאזור האישי</button>
+      <div class="login-footer">שכחתי קוד — פנה/י ליועץ שלך</div>
+    </div>
+
+    <!-- Advisor Login -->
+    <div id="advisor-login" class="hidden">
+      <div style="text-align:center;margin-bottom:16px">
+        <span class="advisor-badge">🎯 כניסת יועץ</span>
+      </div>
+      <div class="field-group">
+        <label class="field-label">שם משתמש</label>
+        <input class="field-input" type="text" placeholder="advisor@sheket.co.il" id="adv-user">
+      </div>
+      <div class="field-group">
+        <label class="field-label">סיסמה</label>
+        <input class="field-input" type="password" placeholder="••••••••" id="adv-pass">
+      </div>
+      <button class="btn-primary" onclick="loginAdvisor()">כניסה לפאנל ניהול</button>
+    </div>
+  </div>
+
+  <div id="promo-section">
+    <div class="promo-heading">מה זה שקט כלכלי?</div>
+    <div class="promo-sub">כלי דיגיטלי שמנתח את המצב הפיננסי של המשפחה — חלק מהליווי האישי שלי</div>
+
+    <div class="pval-grid">
+      <div class="pval-card"><span class="pval-icon">📁</span><div class="pval-title">מעלים מסמכים</div><div class="pval-sub">תלוש שכר, בנק, אשראי</div></div>
+      <div class="pval-card"><span class="pval-icon">🤖</span><div class="pval-title">AI מנתח הכל</div><div class="pval-sub">זיהוי אוטומטי מלא</div></div>
+      <div class="pval-card"><span class="pval-icon">📊</span><div class="pval-title">רואים תמונה</div><div class="pval-sub">ציון ותזרים אמיתי</div></div>
+      <div class="pval-card"><span class="pval-icon">🎯</span><div class="pval-title">מתקדמים יחד</div><div class="pval-sub">יעדים ומעקב</div></div>
+    </div>
+
+    <div class="ba-grid">
+      <div class="ba-box">
+        <div class="ba-label" style="color:var(--gray5)">❌ בלי הכלי</div>
+        <div><span class="ba-tag" style="background:#fee2e2;color:#991b1b">ניחושים</span> → <span class="ba-tag" style="background:#fef3c7;color:#92400e">לחץ</span></div>
+        <div class="ba-quote">"כמה בדיוק אנחנו מוציאים על אוכל?"</div>
+      </div>
+      <div class="ba-box ba-after">
+        <div class="ba-label" style="color:var(--teal)">✅ עם הכלי</div>
+        <div><span class="ba-tag" style="background:#d1fae5;color:#065f46">נתונים</span> → <span class="ba-tag" style="background:#d1fae5;color:#065f46">שקט</span></div>
+        <div class="ba-quote">"3,300 ₪ על מזון — 6% מתחת ליעד"</div>
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:700;color:var(--blue);margin-bottom:10px;text-align:center">איך זה עובד? לחץ על כל שלב</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px">
+      <button class="p-step-btn sp-active" onclick="pStep(0,this)"><div class="p-step-num">שלב 1</div><div class="p-step-title">העלאה</div><div class="p-step-sub">מסמכים</div></button>
+      <button class="p-step-btn" onclick="pStep(1,this)"><div class="p-step-num">שלב 2</div><div class="p-step-title">ניתוח AI</div><div class="p-step-sub">אוטומטי</div></button>
+      <button class="p-step-btn" onclick="pStep(2,this)"><div class="p-step-num">שלב 3</div><div class="p-step-title">תובנות</div><div class="p-step-sub">ציון ותזרים</div></button>
+      <button class="p-step-btn" onclick="pStep(3,this)"><div class="p-step-num">שלב 4</div><div class="p-step-title">יעדים</div><div class="p-step-sub">מעקב</div></button>
+    </div>
+    <div class="p-demo-panel" id="p-demo"></div>
+
+    <div class="p-stat-grid">
+      <div class="p-stat-box"><div class="p-stat-num">74</div><div class="p-stat-lbl">ציון ממוצע</div></div>
+      <div class="p-stat-box"><div class="p-stat-num">5</div><div class="p-stat-lbl">דקות להגדרה</div></div>
+      <div class="p-stat-box"><div class="p-stat-num">3</div><div class="p-stat-lbl">חודשים לשינוי</div></div>
+    </div>
+
+    <div style="padding-top:16px;border-top:1px solid var(--gray3);text-align:center">
+      <div style="font-size:12px;color:var(--gray5);margin-bottom:4px">הכלי ניתן ללקוחות שאני מלווה — לא למכירה</div>
+      <div style="font-size:15px;font-weight:700;color:var(--blue);margin-bottom:14px">רוצה לדעת אם ליווי כזה מתאים לך?</div>
+      <button class="p-cta" onclick="window.open('https://wa.me/972526051364','_blank')">בואו נדבר 💬</button>
+      <a class="p-app-link" href="https://shket-kalkali.vercel.app" target="_blank">כניסה לאפליקציה ←</a>
+    </div>
+  </div>
+</div>
+
+<script>
+var pDemos=[
+  ['📄 תלוש משכורת - יוני 2025','🏦 תדפיס בנק - מאי 2025','💳 דף אשראי ויזה - אפריל 2025'].map((f,i)=>`<div class="p-demo-row" style="animation-delay:${i*0.1}s"><span style="font-size:16px">${['📄','🏦','💳'][i]}</span><span style="font-size:13px;flex:1">${f.slice(3)}</span><span style="font-size:11px;color:var(--teal);font-weight:700">✓ הועלה</span></div>`).join('')+'<div style="font-size:11px;color:var(--gray5);text-align:center;margin-top:6px">PDF, Excel, תמונה מהטלפון — הכל עובד</div>',
+  ['מזהה סוג מסמך','מחלץ הכנסות והוצאות','מסווג קטגוריות הוצאה','מחשב ציון פיננסי'].map((t,i)=>`<div class="p-demo-row" style="animation-delay:${i*0.12}s"><span style="color:var(--teal);font-weight:700">✓</span><span style="font-size:13px">${t}</span></div>`).join(''),
+  `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${[['הכנסה חודשית','18,500 ₪',true],['הוצאה חודשית','14,200 ₪',false],['תזרים חיובי','4,300 ₪',true],['ציון שקט','74/100',true]].map(([l,v,pos],i)=>`<div style="background:#fff;border:1px solid var(--gray3);border-radius:8px;padding:10px;animation:pfade 0.3s ease ${i*0.1}s both"><div style="font-size:11px;color:var(--gray5);margin-bottom:3px">${l}</div><div style="font-size:16px;font-weight:700;color:${pos?'var(--teal)':'#ef4444'}">${v}</div></div>`).join('')}</div>`,
+  [['קרן חירום','36%'],['חיסכון חופשה','40%'],['פירעון הלוואה','60%']].map(([g,p],i)=>`<div style="margin-bottom:11px;animation:pfade 0.3s ease ${i*0.15}s both"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>🎯 ${g}</span><span style="color:var(--teal);font-weight:700">${p}</span></div><div style="background:var(--gray3);border-radius:4px;height:7px"><div style="height:100%;border-radius:4px;background:var(--teal);width:${p}"></div></div></div>`).join('')
+];
+function pStep(i,btn){
+  document.querySelectorAll('.p-step-btn').forEach(b=>b.classList.remove('sp-active'));
+  btn.classList.add('sp-active');
+  var p=document.getElementById('p-demo');
+  p.style.opacity=0;
+  setTimeout(function(){p.innerHTML=pDemos[i];p.style.opacity=1;p.style.transition='opacity 0.25s';},150);
+}
+pStep(0,document.querySelector('.p-step-btn'));
+</script>
+
+<!-- ===== FAMILY APP SHELL ===== -->
+<div id="app-shell" class="hidden">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="top-bar-logo">שקט <span>כלכלי</span></div>
+    <div class="top-bar-right">
+      <button class="notif-btn" onclick="showPage('advisor')">
+        💬
+        <span class="notif-dot"></span>
+      </button>
+      <div class="avatar" onclick="showToast('משפחת כהן')" title="פרופיל">כ</div>
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <div class="page-content">
+    <div id="page-home" class="tab-content"></div>
+    <div id="page-insights" class="tab-content hidden"></div>
+    <div id="page-ai" class="tab-content hidden"></div>
+    <div id="page-docs" class="tab-content hidden"></div>
+    <div id="page-goals" class="tab-content hidden"></div>
+    <div id="page-budget" class="tab-content hidden"></div>
+    <div id="page-advisor" class="tab-content hidden"></div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="showPage('home')" id="nav-home">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">בית</span>
+    </button>
+    <button class="nav-item" onclick="showPage('insights')" id="nav-insights">
+      <span class="nav-icon">💡</span>
+      <span class="nav-label">תובנות</span>
+    </button>
+    <button class="nav-item" onclick="showPage('ai')" id="nav-ai">
+      <span class="nav-icon">🤖</span>
+      <span class="nav-label">AI</span>
+    </button>
+    <button class="nav-item" onclick="showPage('docs')" id="nav-docs">
+      <span class="nav-icon">📄</span>
+      <span class="nav-label">מסמכים</span>
+    </button>
+    <button class="nav-item" onclick="showPage('goals')" id="nav-goals">
+      <span class="nav-icon">🎯</span>
+      <span class="nav-label">יעדים</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ===== ADMIN SHELL ===== -->
+<div id="admin-shell" class="hidden">
+  <div class="admin-sidebar">
+    <div class="admin-logo">שקט <span>כלכלי</span><br><small style="font-size:11px;font-weight:400;opacity:0.6">פאנל יועץ</small></div>
+    <button class="admin-nav-item active" onclick="adminPage('families')">👨‍👩‍👧 משפחות</button>
+    <button class="admin-nav-item" onclick="adminPage('reports')">📊 דוחות</button>
+    <button class="admin-nav-item" onclick="adminPage('messages')">💬 הודעות</button>
+    <button class="admin-nav-item" onclick="adminPage('settings')">⚙️ הגדרות</button>
+    <div style="flex:1"></div>
+    <button class="admin-nav-item" onclick="logout()" style="margin-top:auto">🚪 יציאה</button>
+  </div>
+  <div class="admin-main" id="admin-main-content"></div>
+</div>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay hidden" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box">
+    <div class="modal-handle"></div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const DATA = {
+  family: { name: 'כהן', firstName: 'יוסי ורחל', score: 74 },
+  kpi: { income: 22400, expense: 18900, cashflow: 3500, balance: 8200 },
+  months: ['יול','אוג','ספט','אוק','נוב','דצמ','ינו','פבר','מרץ','אפר','מאי','יונ'],
+  incomes: [20500,21000,21800,22000,19500,23000,22000,21500,22000,22400,22200,22400],
+  expenses:[18200,19500,17800,20100,16900,21200,18700,19200,18500,19000,18600,18900],
+  categories:[
+    {label:'דיור',value:6800,color:'#1a3a5c'},
+    {label:'מזון',value:3200,color:'#0d9488'},
+    {label:'תחבורה',value:2100,color:'#f59e0b'},
+    {label:'חינוך',value:1800,color:'#8b5cf6'},
+    {label:'בריאות',value:1200,color:'#ec4899'},
+    {label:'הלוואות',value:2400,color:'#ef4444'},
+    {label:'בילויים',value:900,color:'#06b6d4'},
+    {label:'אחר',value:500,color:'#94a3b8'},
+  ],
+  goals:[
+    {name:'קרן חירום',icon:'🛡️',color:'#eff6ff',target:30000,current:18600,date:'דצמ 2025'},
+    {name:'סגירת מינוס',icon:'💳',color:'#fef2f2',target:15000,current:9200,date:'מרץ 2026'},
+    {name:'חיסכון לרכב',icon:'🚗',color:'#f0fdf4',target:60000,current:22000,date:'ינו 2027'},
+    {name:'חופשה משפחתית',icon:'✈️',color:'#fdf4ff',target:12000,current:4800,date:'יול 2026'},
+  ],
+  budget:[
+    {cat:'דיור',budget:7000,actual:6800},
+    {cat:'מזון',budget:3000,actual:3200},
+    {cat:'תחבורה',budget:2000,actual:2100},
+    {cat:'חינוך',budget:2000,actual:1800},
+    {cat:'בריאות',budget:1000,actual:1200},
+    {cat:'הלוואות',budget:2400,actual:2400},
+    {cat:'בילויים',budget:1500,actual:900},
+    {cat:'אחר',budget:600,actual:500},
+  ],
+  docs:[
+    {name:'בנק לאומי - מאי 2025',type:'bank',icon:'🏦',date:'12.6.25',status:'done'},
+    {name:'ויזה כאל - מאי 2025',type:'credit',icon:'💳',date:'10.6.25',status:'done'},
+    {name:'תלוש שכר - יוסי - מאי',type:'salary',icon:'💰',date:'5.6.25',status:'done'},
+    {name:'הלוואת הבנק - הסכם',type:'loan',icon:'📋',date:'1.6.25',status:'done'},
+    {name:'קרן השתלמות - דוח',type:'bank',icon:'📈',date:'30.5.25',status:'proc'},
+    {name:'תלוש שכר - רחל - מאי',type:'salary',icon:'💰',date:'28.5.25',status:'done'},
+  ],
+  insights:[
+    {type:'danger',icon:'⚠️',title:'חריגה בתקציב מזון',priority:'high',
+     body:'הוצאות המזון החודש עמדו על 3,200 ₪, גבוה ב-200 ₪ מהתקציב המתוכנן. בחינה של 3 החודשים האחרונים מראה מגמת עלייה.',
+     rec:'מומלץ לעבור לרשימת קניות מוגדרת ולצמצם הזמנות אוכל מוכן.'},
+    {type:'success',icon:'✅',title:'הכנסה יציבה – מגמה חיובית',priority:'low',
+     body:'ההכנסה החודשית שלכם יציבה מזה 6 חודשים ועולה בממוצע 1.2% בחודש. זהו בסיס מצוין להגדלת חיסכון.',
+     rec:'שקלו להעביר 500 ₪ נוספים לחיסכון חודשי כדי לנצל את היציבות.'},
+    {type:'warn',icon:'💡',title:'פוטנציאל חיסכון מזוהה',priority:'med',
+     body:'זוהו 3 מנויים חוזרים שלא נעשה בהם שימוש פעיל: ספוטיפיי, נטפליקס II, ותוכנת ענן. עלות כוללת: 89 ₪/חודש.',
+     rec:'ביטול מנויים אלו יחסוך 1,068 ₪ בשנה.'},
+    {type:'info',icon:'📊',title:'יחס החזר הלוואות גבוה',priority:'med',
+     body:'החזרי ההלוואות שלכם עומדים על 10.7% מההכנסה. הנורמה המומלצת היא עד 15%, כך שאתם בטווח בטוח.',
+     rec:'ניתן לשקול מחזור הלוואה לקבלת תנאים טובים יותר בשוק הנוכחי.'},
+    {type:'success',icon:'🎯',title:'קרן החירום בדרך ל-100%',priority:'low',
+     body:'קרן החירום הגיעה ל-62% מהיעד. בקצב הנוכחי תגיעו ל-100% תוך כ-5 חודשים.',
+     rec:'המשיכו לפי התוכנית הנוכחית. שקלו להעביר בונוסים ישירות לקרן.'},
+  ],
+  messages:[
+    {from:'יועץ - דרור',text:'ראיתי את הנתונים החדשים, נדבר על זה בפגישה השבועית 👍',time:'לפני שעה'},
+    {from:'יועץ - דרור',text:'הלוואה 2 - בדקתי, אפשר להוריד את הריבית ב-0.5%. שלחתי לך הצעה.',time:'אתמול'},
+    {from:'מערכת',text:'מסמך חדש עובד בהצלחה: תלוש שכר יוני 2025',time:'לפני יומיים'},
+  ],
+  tasks:[
+    {text:'לבטל מנויים שאינם בשימוש (3 מנויים)',done:false,prio:'h'},
+    {text:'לשלוח תלוש שכר יוני – רחל',done:false,prio:'h'},
+    {text:'לבדוק הצעת מחזור הלוואה',done:false,prio:'m'},
+    {text:'להפחית הוצאות מזון ב-200 ₪',done:true,prio:'m'},
+    {text:'לאשר יעד חופשה משפחתית',done:true,prio:'l'},
+  ],
+  families:[
+    {name:'משפחת כהן',members:'יוסי ורחל, 2 ילדים',score:74,status:'active',tag:'badge-active',tagText:'פעיל',initials:'כ',since:'ינו 2025'},
+    {name:'משפחת לוי',members:'דוד ושרה, 3 ילדים',score:62,status:'warn',tag:'badge-warn',tagText:'תשומת לב',initials:'ל',since:'מרץ 2025'},
+    {name:'משפחת ישראלי',members:'אלון ונועה',score:88,status:'active',tag:'badge-active',tagText:'פעיל',initials:'י',since:'פבר 2025'},
+    {name:'משפחת אברהם',members:'מושה ואסתר, 4 ילדים',score:55,status:'warn',tag:'badge-warn',tagText:'תשומת לב',initials:'א',since:'מאי 2025'},
+    {name:'משפחת גולן',members:'ניר ומיכל',score:91,status:'active',tag:'badge-active',tagText:'פעיל',initials:'ג',since:'דצמ 2024'},
+    {name:'משפחת מזרחי',members:'אמיר ולירון, 1 ילד',score:70,status:'new',tag:'badge-new',tagText:'חדש',initials:'מ',since:'יונ 2025'},
+  ],
+};
+
+// ─── CHARTS ─────────────────────────────────────────────────────────────────
+let chartTrend=null, chartPie=null;
+
+function renderTrendChart(){
+  const ctx=document.getElementById('chart-trend');
+  if(!ctx)return;
+  if(chartTrend){chartTrend.destroy();}
+  chartTrend=new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:DATA.months,
+      datasets:[
+        {label:'הכנסות',data:DATA.incomes,borderColor:'#0d9488',backgroundColor:'rgba(13,148,136,0.08)',tension:0.4,fill:true,borderWidth:2.5,pointRadius:3},
+        {label:'הוצאות',data:DATA.expenses,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.05)',tension:0.4,fill:true,borderWidth:2.5,pointRadius:3},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{font:{size:12},boxWidth:12}},tooltip:{rtl:true}},
+      scales:{
+        x:{grid:{display:false},ticks:{font:{size:10}}},
+        y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10},callback:v=>(v/1000)+'K ₪'}},
+      }
+    }
+  });
+}
+
+function renderPieChart(){
+  const ctx=document.getElementById('chart-pie');
+  if(!ctx)return;
+  if(chartPie){chartPie.destroy();}
+  chartPie=new Chart(ctx,{
+    type:'doughnut',
+    data:{
+      labels:DATA.categories.map(c=>c.label),
+      datasets:[{data:DATA.categories.map(c=>c.value),backgroundColor:DATA.categories.map(c=>c.color),borderWidth:2,borderColor:'#fff'}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw.toLocaleString('he-IL')} ₪`}}}
+    }
+  });
+}
+
+// ─── SCORE RING ──────────────────────────────────────────────────────────────
+function scoreRingSVG(score){
+  const r=54, cx=65, cy=65, circ=2*Math.PI*r;
+  const dash=circ*(score/100), gap=circ-dash;
+  return `<svg width="130" height="130" viewBox="0 0 130 130">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="10"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="10"
+      stroke-dasharray="${dash} ${gap}" stroke-linecap="round"/>
+  </svg>`;
+}
+
+// ─── PAGES ───────────────────────────────────────────────────────────────────
+function buildHome(){
+  const {name,firstName,score}=DATA.family;
+  const {income,expense,cashflow,balance}=DATA.kpi;
+  const fmt=n=>n.toLocaleString('he-IL');
+  document.getElementById('page-home').innerHTML=`
+    <p class="greeting">שלום, משפחת ${name} 👋</p>
+    <p class="greeting-sub">${new Date().toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'})}</p>
+
+    <div class="score-card">
+      <div class="score-label">ציון שקט כלכלי</div>
+      <div class="score-ring">${scoreRingSVG(score)}<div class="score-number">${score}<sup>/100</sup></div></div>
+      <div class="score-tag">טוב מאוד – ממשיכים לעלות! 📈</div>
+      <div class="score-factors">
+        <span class="score-factor">תזרים ✓</span>
+        <span class="score-factor">הכנסה יציבה ✓</span>
+        <span class="score-factor">חסכונות ✓</span>
+        <span class="score-factor">חובות ⚠️</span>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon">💰</div>
+        <div class="kpi-label">הכנסה חודשית</div>
+        <div class="kpi-value">${fmt(income)} ₪</div>
+        <div class="kpi-change up">▲ 1.2% מחודש קודם</div>
+      </div>
+      <div class="kpi-card neg">
+        <div class="kpi-icon">🛒</div>
+        <div class="kpi-label">הוצאה חודשית</div>
+        <div class="kpi-value">${fmt(expense)} ₪</div>
+        <div class="kpi-change down">▲ 1.6% מחודש קודם</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">💹</div>
+        <div class="kpi-label">תזרים חודשי</div>
+        <div class="kpi-value">${fmt(cashflow)} ₪</div>
+        <div class="kpi-change up">▲ יציב</div>
+      </div>
+      <div class="kpi-card warn">
+        <div class="kpi-icon">🏦</div>
+        <div class="kpi-label">יתרה פנויה</div>
+        <div class="kpi-value">${fmt(balance)} ₪</div>
+        <div class="kpi-change up">▲ 3.4%</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">מגמות 12 חודשים</div>
+      <div class="chart-wrap"><canvas id="chart-trend"></canvas></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">חלוקת הוצאות – יוני 2025</div>
+      <div class="pie-wrap"><canvas id="chart-pie"></canvas></div>
+      <div class="pie-legend">
+        ${DATA.categories.map(c=>`<div class="legend-item"><div class="legend-dot" style="background:${c.color}"></div><span>${c.label}</span><span style="margin-right:auto;font-weight:700">${fmt(c.value)} ₪</span></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">התראות</div>
+      <div class="alert danger"><span class="alert-icon">🚨</span><div class="alert-text"><strong>חריגה בתקציב מזון</strong> – 200 ₪ מעל התקציב החודש</div></div>
+      <div class="alert warn"><span class="alert-icon">⚠️</span><div class="alert-text"><strong>תלוש שכר חסר</strong> – טרם הועלה תלוש רחל לחודש יוני</div></div>
+      <div class="alert success"><span class="alert-icon">✅</span><div class="alert-text"><strong>יעד קרן חירום</strong> – הגעתם ל-62% מהיעד! כל הכבוד</div></div>
+      <div class="alert info"><span class="alert-icon">💡</span><div class="alert-text"><strong>תובנה חדשה מה-AI</strong> – זוהה פוטנציאל חיסכון של 89 ₪/חודש</div></div>
+    </div>
+  `;
+  setTimeout(()=>{renderTrendChart();renderPieChart();},50);
+}
+
+function buildInsights(){
+  document.getElementById('page-insights').innerHTML=`
+    <p class="section-title">תובנות AI <span class="section-sub">מעודכן לפי הנתונים שלך</span></p>
+    ${DATA.insights.map(i=>`
+      <div class="insight-card ${i.type}">
+        <div class="insight-header">
+          <span class="insight-icon">${i.icon}</span>
+          <span class="insight-title">${i.title}</span>
+          <span class="insight-priority priority-${i.priority==='high'?'high':i.priority==='med'?'med':'low'}">${i.priority==='high'?'דחוף':i.priority==='med'?'בינוני':'נמוך'}</span>
+        </div>
+        <div class="insight-body">${i.body}</div>
+        <div class="insight-rec">💡 ${i.rec}</div>
+      </div>
+    `).join('')}
+  `;
+}
+
+const chatHistory=[
+  {role:'ai',text:'שלום משפחת כהן! אני העוזר הפיננסי האישי שלכם 🤖\nאני מכיר את כל הנתונים שלכם ואשמח לעזור בכל שאלה כלכלית. במה אוכל לסייע היום?'},
+];
+
+function buildAI(){
+  document.getElementById('page-ai').innerHTML=`
+    <div class="chat-container">
+      <div class="quick-chips">
+        <div class="chip" onclick="sendAIMsg('איפה אנחנו מבזבזים הכי הרבה?')">איפה מבזבזים הכי הרבה?</div>
+        <div class="chip" onclick="sendAIMsg('כמה נוכל לחסוך?')">כמה נוכל לחסוך?</div>
+        <div class="chip" onclick="sendAIMsg('מה התחזית לשנה הקרובה?')">תחזית לשנה</div>
+        <div class="chip" onclick="sendAIMsg('האם כדאי למחזר הלוואה?')">מחזור הלוואה?</div>
+      </div>
+      <div class="chat-messages" id="chat-messages">${renderChatMessages()}</div>
+      <div class="chat-input-wrap">
+        <button class="chat-send" onclick="submitChat()">➤</button>
+        <textarea class="chat-input" id="chat-input" placeholder="שאל/י שאלה כלכלית..." rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitChat()}"
+          oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      </div>
+    </div>
+  `;
+  scrollChat();
+}
+
+function renderChatMessages(){
+  return chatHistory.map(m=>`
+    <div class="chat-msg ${m.role==='ai'?'ai':'user'}">
+      ${m.role==='ai'?'<div class="chat-avatar ai-avatar">AI</div>':''}
+      <div class="chat-bubble">${m.text.replace(/\n/g,'<br>')}</div>
+      ${m.role==='user'?'<div class="chat-avatar user-avatar">👤</div>':''}
+    </div>
+  `).join('');
+}
+
+const aiResponses={
+  'איפה אנחנו מבזבזים הכי הרבה?':'לפי ניתוח 6 החודשים האחרונים, 3 קטגוריות הוצאה הכי גדולות שלכם:\n\n🏠 דיור – 6,800 ₪/חודש (36%)\n🛒 מזון – 3,200 ₪/חודש (17%)\n💳 הלוואות – 2,400 ₪/חודש (13%)\n\nדיור הוא קשה לשינוי, אבל מזון הוצג 200 ₪ מעל תקציב החודש. רוצים שאנתח את הוצאות המזון לעומק?',
+  'כמה נוכל לחסוך?':'בהתבסס על ההכנסות וההוצאות שלכם, ניתן לחסוך עוד:\n\n💡 ביטול מנויים לא בשימוש: +89 ₪/חודש\n🛒 הפחתת הוצאות מזון: +200 ₪/חודש\n🎬 צמצום בילויים: +200 ₪/חודש\n\n📊 סה"כ פוטנציאל: ~489 ₪/חודש = 5,868 ₪ בשנה!\n\nזה יכול לקצר את יעד קרן החירום ב-3 חודשים.',
+  'מה התחזית לשנה הקרובה?':'לפי ניתוח המגמות שלכם:\n\n📈 הכנסה: צפויה לעלות ל-23,500 ₪ (עלייה שנתית של ~5%)\n📉 הוצאות: תישארנה יציבות אם תמשיכו בתוכנית\n💰 חיסכון שנתי: 45,000-50,000 ₪\n\nאם תישמרו על התוכנית:\n✅ קרן חירום – מוגמרת עד נובמבר 2025\n✅ סגירת מינוס – מרץ 2026\n✅ קרן לרכב – 55% עד סוף 2025',
+  'האם כדאי למחזר הלוואה?':'ניתוח הלוואה קיימת:\n\n💳 יתרת הלוואה: 85,000 ₪\n📊 ריבית נוכחית: 5.2%\n💸 החזר חודשי: 2,400 ₪\n\nריבית שוק נוכחית: 4.5-4.7%\n\n✅ המלצה: כן, כדאי לבדוק מחזור!\nחיסכון משוער: 300-400 ₪/חודש\n= 3,600-4,800 ₪ בשנה\n\nהיועץ שלכם דרור כבר שלח הצעה – ראיתם?',
+};
+
+function sendAIMsg(text){
+  document.getElementById('chat-input').value=text;
+  submitChat();
+}
+
+function submitChat(){
+  const inp=document.getElementById('chat-input');
+  const text=inp.value.trim();
+  if(!text)return;
+  chatHistory.push({role:'user',text});
+  inp.value='';inp.style.height='auto';
+  document.getElementById('chat-messages').innerHTML=renderChatMessages()+
+    `<div class="chat-msg ai"><div class="chat-avatar ai-avatar">AI</div><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
+  scrollChat();
+  setTimeout(()=>{
+    const resp=Object.entries(aiResponses).find(([k])=>text.includes(k.split('?')[0].split('–')[0].trim().substring(0,5)));
+    const answer=resp?resp[1]:`תודה על השאלה! לפי הנתונים שלכם (הכנסה: 22,400 ₪, הוצאות: 18,900 ₪, תזרים: 3,500 ₪):\n\nאני מנתח את השאלה שלך לעומק... 🔍\n\nהמלצה ראשונית: נמשיך לשאלה הספציפית יותר – מה בדיוק תרצו לדעת?`;
+    chatHistory.push({role:'ai',text:answer});
+    document.getElementById('chat-messages').innerHTML=renderChatMessages();
+    scrollChat();
+  },1400);
+}
+
+function scrollChat(){
+  const el=document.getElementById('chat-messages');
+  if(el)setTimeout(()=>el.scrollTop=el.scrollHeight,50);
+}
+
+function buildDocs(){
+  document.getElementById('page-docs').innerHTML=`
+    <div class="upload-zone" id="upload-zone" ondragover="this.classList.add('drag');event.preventDefault()" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)" onclick="document.getElementById('file-input').click()">
+      <div class="upload-icon">📤</div>
+      <div class="upload-title">גרור קובץ לכאן או לחץ להעלאה</div>
+      <div class="upload-sub">PDF, Excel, CSV, תמונות</div>
+      <div class="upload-formats">תדפיסי בנק · כרטיסי אשראי · תלושי שכר · הלוואות · חסכונות</div>
+      <input type="file" id="file-input" class="hidden" accept=".pdf,.xlsx,.xls,.csv,.jpg,.png" onchange="handleFileSelect(event)">
+    </div>
+    <div class="section-title">מסמכים שהועלו (${DATA.docs.length})</div>
+    <div class="doc-list">
+      ${DATA.docs.map(d=>`
+        <div class="doc-item">
+          <div class="doc-icon ${d.type}">${d.icon}</div>
+          <div class="doc-meta">
+            <div class="doc-name">${d.name}</div>
+            <div class="doc-info">הועלה ${d.date}</div>
+          </div>
+          <span class="doc-status ${d.status==='done'?'status-done':d.status==='proc'?'status-proc':'status-err'}">${d.status==='done'?'עובד ✓':d.status==='proc'?'מעבד...':'שגיאה'}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag');
+  const files=[...e.dataTransfer.files];
+  if(files.length)processFiles(files);
+}
+function handleFileSelect(e){processFiles([...e.target.files]);}
+function processFiles(files){
+  files.forEach(f=>{
+    showToast(`מעלה: ${f.name}...`);
+    setTimeout(()=>{
+      DATA.docs.unshift({name:f.name,type:'bank',icon:'📄',date:new Date().toLocaleDateString('he-IL'),status:'proc'});
+      buildDocs();
+      showToast(`✅ ${f.name} עובד בהצלחה!`);
+    },1500);
+  });
+}
+
+function buildGoals(){
+  document.getElementById('page-goals').innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <span class="section-title" style="margin-bottom:0">יעדים פיננסיים</span>
+      <button onclick="showNewGoalModal()" style="background:var(--teal);color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer">+ יעד חדש</button>
+    </div>
+    ${DATA.goals.map((g,i)=>{
+      const pct=Math.round((g.current/g.target)*100);
+      const rem=g.target-g.current;
+      return `<div class="goal-card">
+        <div class="goal-header">
+          <div class="goal-icon" style="background:${g.color}">${g.icon}</div>
+          <div class="goal-meta">
+            <div class="goal-name">${g.name}</div>
+            <div class="goal-date">יעד: ${g.date}</div>
+          </div>
+          <div class="goal-pct">${pct}%</div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        </div>
+        <div class="goal-amounts">
+          <span>נוכחי: <strong>${g.current.toLocaleString('he-IL')} ₪</strong></span>
+          <span>יעד: <strong>${g.target.toLocaleString('he-IL')} ₪</strong></span>
+        </div>
+        <div class="goal-est">⏱ נותר ${rem.toLocaleString('he-IL')} ₪ · תחזית השלמה: ${g.date}</div>
+      </div>`;
+    }).join('')}
+
+    <div class="card" style="margin-top:16px">
+      <div class="section-title">תוכנית פעולה</div>
+      ${DATA.tasks.map((t,i)=>`
+        <div class="task-item">
+          <div class="task-check ${t.done?'done':''}" onclick="toggleTask(${i})">${t.done?'✓':''}</div>
+          <div class="task-text ${t.done?'done':''}">${t.text}</div>
+          <span class="task-prio prio-${t.prio}">${t.prio==='h'?'דחוף':t.prio==='m'?'בינוני':'נמוך'}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function toggleTask(i){DATA.tasks[i].done=!DATA.tasks[i].done;buildGoals();}
+
+function buildBudget(){
+  document.getElementById('page-budget').innerHTML=`
+    <div class="budget-header">
+      <span class="section-title" style="margin-bottom:0">ניהול תקציב</span>
+      <select class="month-select" onchange="showToast('טוען נתונים...')">
+        <option>יוני 2025</option><option>מאי 2025</option><option>אפריל 2025</option>
+      </select>
+    </div>
+    <div class="card" style="overflow-x:auto">
+      <table class="budget-table">
+        <thead><tr><th>קטגוריה</th><th>תקציב</th><th>בפועל</th><th>סטייה</th><th>%</th></tr></thead>
+        <tbody>
+          ${DATA.budget.map(r=>{
+            const diff=r.budget-r.actual;
+            const pct=Math.round((r.actual/r.budget)*100);
+            const barClass=pct>100?'over':pct>85?'warn':'ok';
+            return `<tr>
+              <td style="font-weight:600">${r.cat}</td>
+              <td>${r.budget.toLocaleString('he-IL')} ₪</td>
+              <td>${r.actual.toLocaleString('he-IL')} ₪</td>
+              <td class="${diff>=0?'diff-pos':'diff-neg'}">${diff>=0?'+':''}${diff} ₪</td>
+              <td><div class="budget-bar-wrap"><div class="budget-bar ${barClass}" style="width:${Math.min(pct,100)}%"></div></div></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div class="kpi-grid" style="margin-top:4px">
+      <div class="kpi-card"><div class="kpi-label">סה"כ תקציב</div><div class="kpi-value">19,500 ₪</div></div>
+      <div class="kpi-card neg"><div class="kpi-label">סה"כ בפועל</div><div class="kpi-value">18,900 ₪</div></div>
+    </div>
+  `;
+}
+
+function buildAdvisor(){
+  document.getElementById('page-advisor').innerHTML=`
+    <div class="section-title">קשר עם היועץ</div>
+    <div class="advisor-panel">
+      <h3>💬 הודעות מדרור</h3>
+      ${DATA.messages.map(m=>`
+        <div class="msg-item">
+          <div class="msg-avatar">ד</div>
+          <div class="msg-content">
+            <div class="msg-name">${m.from}</div>
+            <div class="msg-text">${m.text}</div>
+            <div class="msg-time">${m.time}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="advisor-panel">
+      <h3>📋 משימות פתוחות</h3>
+      ${DATA.tasks.filter(t=>!t.done).map((t,i)=>`
+        <div class="task-item">
+          <div class="task-check" onclick="toggleTask(DATA.tasks.indexOf(t));buildAdvisor()"></div>
+          <div class="task-text">${t.text}</div>
+          <span class="task-prio prio-${t.prio}">${t.prio==='h'?'דחוף':t.prio==='m'?'בינוני':'נמוך'}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="advisor-panel">
+      <h3>📅 סיכום פגישה אחרונה – 5.6.25</h3>
+      <div style="font-size:14px;color:var(--text2);line-height:1.7">
+        <p>✅ סקרנו את נתוני מאי – תזרים חיובי של 3,500 ₪</p>
+        <p>✅ הגדרנו יעד חדש: חופשה משפחתית יולי 2026</p>
+        <p>⚠️ הוחלט לבדוק מחזור הלוואה – דרור שולח הצעות</p>
+        <p>📌 פגישה הבאה: 3.7.25 שעה 18:00</p>
+      </div>
+    </div>
+    <div style="margin-top:8px">
+      <button class="btn-primary" onclick="showToast('פותח WhatsApp...')">💬 שלח הודעה לדרור</button>
+    </div>
+  `;
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+const pages=['home','insights','ai','docs','goals','budget','advisor'];
+function showPage(name){
+  pages.forEach(p=>{
+    const el=document.getElementById('page-'+p);
+    if(el)el.classList.toggle('hidden',p!==name);
+  });
+  document.querySelectorAll('.nav-item').forEach(el=>{
+    el.classList.toggle('active',el.id==='nav-'+name);
+  });
+  if(name==='home')buildHome();
+  else if(name==='insights')buildInsights();
+  else if(name==='ai')buildAI();
+  else if(name==='docs')buildDocs();
+  else if(name==='goals')buildGoals();
+  else if(name==='budget')buildBudget();
+  else if(name==='advisor')buildAdvisor();
+}
+
+// ─── LOGIN ────────────────────────────────────────────────────────────────────
+function switchLoginTab(tab){
+  document.querySelectorAll('.login-tab').forEach((el,i)=>el.classList.toggle('active',(i===0&&tab==='family')||(i===1&&tab==='advisor')));
+  document.getElementById('family-login').classList.toggle('hidden',tab!=='family');
+  document.getElementById('advisor-login').classList.toggle('hidden',tab!=='advisor');
+}
+
+// PIN auto-advance
+document.addEventListener('DOMContentLoaded',()=>{
+  ['p1','p2','p3','p4'].forEach((id,i,arr)=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.addEventListener('input',()=>{if(el.value&&arr[i+1])document.getElementById(arr[i+1]).focus();});
+    el.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!el.value&&arr[i-1])document.getElementById(arr[i-1]).focus();});
+  });
+});
+
+function loginFamily(){
+  const phone=document.getElementById('family-phone').value;
+  const pin=[1,2,3,4].map(i=>document.getElementById('p'+i).value).join('');
+  if(!phone){showToast('נא להזין טלפון / אימייל');return;}
+  if(pin.length<4){showToast('נא להזין קוד 4 ספרות');return;}
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('app-shell').classList.remove('hidden');
+  showPage('home');
+}
+
+function loginAdvisor(){
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('admin-shell').classList.remove('hidden');
+  adminPage('families');
+}
+
+function logout(){
+  document.getElementById('admin-shell').classList.add('hidden');
+  document.getElementById('app-shell').classList.add('hidden');
+  document.getElementById('login-screen').classList.remove('hidden');
+}
+
+// ─── ADMIN ────────────────────────────────────────────────────────────────────
+function adminPage(page){
+  document.querySelectorAll('.admin-nav-item').forEach((el,i)=>{
+    const pages=['families','reports','messages','settings'];
+    el.classList.toggle('active',pages[i]===page);
+  });
+  const main=document.getElementById('admin-main-content');
+  if(page==='families'){
+    main.innerHTML=`
+      <div class="admin-header">
+        <h1>משפחות</h1>
+        <button class="btn-new" onclick="showNewFamilyModal()">+ משפחה חדשה</button>
+      </div>
+      <div class="admin-stats-grid">
+        <div class="admin-stat"><div class="admin-stat-num">${DATA.families.length}</div><div class="admin-stat-label">משפחות פעילות</div></div>
+        <div class="admin-stat"><div class="admin-stat-num">73</div><div class="admin-stat-label">ציון ממוצע</div></div>
+        <div class="admin-stat"><div class="admin-stat-num">28</div><div class="admin-stat-label">מסמכים השבוע</div></div>
+        <div class="admin-stat"><div class="admin-stat-num">4</div><div class="admin-stat-label">התראות פתוחות</div></div>
+      </div>
+      <div class="search-bar"><span>🔍</span><input placeholder="חיפוש משפחה..." onInput="filterFamilies(this.value)"></div>
+      <div id="families-list">
+        ${renderFamilyCards(DATA.families)}
+      </div>
+    `;
+  } else if(page==='reports'){
+    main.innerHTML=`
+      <div class="admin-header"><h1>דוחות</h1></div>
+      <div class="admin-stats-grid">
+        <div class="admin-stat"><div class="admin-stat-num">6</div><div class="admin-stat-label">משפחות מעל 70</div></div>
+        <div class="admin-stat"><div class="admin-stat-num">2</div><div class="admin-stat-label">דורשות תשומת לב</div></div>
+      </div>
+      <div class="card"><div class="section-title">דוח ביצועים – יוני 2025</div>
+        <div class="chart-wrap"><canvas id="admin-chart"></canvas></div>
+      </div>`;
+    setTimeout(()=>{
+      const ctx=document.getElementById('admin-chart');
+      if(ctx)new Chart(ctx,{type:'bar',data:{labels:DATA.families.map(f=>f.name.replace('משפחת ','')),datasets:[{label:'ציון שקט כלכלי',data:DATA.families.map(f=>f.score),backgroundColor:DATA.families.map(f=>f.score>=75?'#0d9488':f.score>=60?'#f59e0b':'#ef4444')}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100}}}});
+    },50);
+  } else if(page==='messages'){
+    main.innerHTML=`<div class="admin-header"><h1>הודעות</h1></div>
+      ${DATA.families.map(f=>`<div class="family-card-admin" onclick="showToast('פותח שיחה עם ${f.name}')">
+        <div class="family-avatar-big">${f.initials}</div>
+        <div class="family-info"><div class="family-name">${f.name}</div><div class="family-sub">הודעה אחרונה לפני שעה</div></div>
+        <span style="font-size:18px">💬</span>
+      </div>`).join('')}`;
+  } else {
+    main.innerHTML=`<div class="admin-header"><h1>הגדרות</h1></div>
+      <div class="card"><div class="section-title">פרטי יועץ</div>
+        <div class="field-group"><label class="field-label">שם</label><input class="field-input" value="דרור כהן"></div>
+        <div class="field-group"><label class="field-label">אימייל</label><input class="field-input" value="dror@sheket.co.il"></div>
+        <button class="btn-primary" onclick="showToast('נשמר בהצלחה ✓')">שמור שינויים</button>
+      </div>`;
+  }
+}
+
+function renderFamilyCards(families){
+  return families.map(f=>`
+    <div class="family-card-admin" onclick="loginAsFamilyView('${f.name}')">
+      <div class="family-avatar-big">${f.initials}</div>
+      <div class="family-info">
+        <div class="family-name">${f.name}</div>
+        <div class="family-sub">${f.members} · מאז ${f.since}</div>
+        <div class="family-badges"><span class="family-badge ${f.tag}">${f.tagText}</span></div>
+      </div>
+      <div class="family-score">
+        <div class="family-score-num">${f.score}</div>
+        <div class="family-score-label">ציון</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterFamilies(q){
+  const filtered=DATA.families.filter(f=>f.name.includes(q)||f.members.includes(q));
+  document.getElementById('families-list').innerHTML=renderFamilyCards(filtered);
+}
+
+function loginAsFamilyView(name){
+  document.getElementById('admin-shell').classList.add('hidden');
+  document.getElementById('app-shell').classList.remove('hidden');
+  DATA.family.name=name.replace('משפחת ','');
+  showPage('home');
+  showToast('צופה בתור: '+name);
+}
+
+// ─── MODALS ───────────────────────────────────────────────────────────────────
+function showNewFamilyModal(){
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-title">➕ משפחה חדשה</div>
+    <div class="field-group"><label class="field-label">שם משפחה</label><input class="field-input" id="new-fam-name" placeholder="לדוגמה: משפחת לוי"></div>
+    <div class="field-group"><label class="field-label">שם הלקוח הראשי</label><input class="field-input" id="new-fam-primary" placeholder="יוסי לוי"></div>
+    <div class="field-group"><label class="field-label">טלפון</label><input class="field-input" id="new-fam-phone" placeholder="050-000-0000" type="tel"></div>
+    <div class="field-group"><label class="field-label">אימייל</label><input class="field-input" id="new-fam-email" placeholder="family@email.com" type="email"></div>
+    <div class="field-group"><label class="field-label">קוד כניסה (4 ספרות)</label><div class="pin-row" style="justify-content:flex-start">
+      <input class="pin-digit" type="text" maxlength="1" inputmode="numeric">
+      <input class="pin-digit" type="text" maxlength="1" inputmode="numeric">
+      <input class="pin-digit" type="text" maxlength="1" inputmode="numeric">
+      <input class="pin-digit" type="text" maxlength="1" inputmode="numeric">
+    </div></div>
+    <button class="btn-primary" onclick="createFamily()">צור משפחה</button>
+  `;
+  document.getElementById('modal-overlay').classList.remove('hidden');
+}
+
+function showNewGoalModal(){
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-title">🎯 יעד פיננסי חדש</div>
+    <div class="field-group"><label class="field-label">שם היעד</label><input class="field-input" id="goal-name" placeholder="קרן חירום, דירה, רכב..."></div>
+    <div class="field-group"><label class="field-label">סכום יעד (₪)</label><input class="field-input" id="goal-amount" type="number" placeholder="50000"></div>
+    <div class="field-group"><label class="field-label">תאריך יעד</label><input class="field-input" id="goal-date" type="month"></div>
+    <button class="btn-primary" onclick="createGoal()">הוסף יעד</button>
+  `;
+  document.getElementById('modal-overlay').classList.remove('hidden');
+}
+
+function createFamily(){
+  const name=document.getElementById('new-fam-name').value;
+  if(!name){showToast('נא להזין שם משפחה');return;}
+  closeModal();showToast('✅ '+name+' נוצרה בהצלחה!');
+  DATA.families.unshift({name,members:'לקוח חדש',score:0,status:'new',tag:'badge-new',tagText:'חדש',initials:name[name.length-1]||'?',since:'יונ 2025'});
+  adminPage('families');
+}
+
+function createGoal(){
+  const name=document.getElementById('goal-name').value;
+  const amount=parseInt(document.getElementById('goal-amount').value)||0;
+  if(!name||!amount){showToast('נא למלא את כל השדות');return;}
+  DATA.goals.push({name,icon:'⭐',color:'#fdf4ff',target:amount,current:0,date:'?'});
+  closeModal();buildGoals();showToast('✅ יעד נוסף בהצלחה!');
+}
+
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modal-overlay'))
+    document.getElementById('modal-overlay').classList.add('hidden');
+}
+
+// ─── TOAST ────────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg){
+  let t=document.querySelector('.toast');
+  if(!t){t=document.createElement('div');t.className='toast';document.body.appendChild(t);}
+  t.textContent=msg;t.style.display='block';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{if(t)t.style.display='none';},2500);
+}
+</script>
+</body>
+</html>
