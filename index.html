@@ -20,7 +20,30 @@
 }
 body{font-family:'Segoe UI',Arial,sans-serif;background:var(--gray);color:var(--text);min-height:100vh;direction:rtl}
 .hidden{display:none!important}
-#login-screen{min-height:100vh;background:linear-gradient(135deg,var(--blue) 0%,#0f4c81 50%,var(--teal) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+#login-screen{min-height:100vh;background:linear-gradient(135deg,var(--blue) 0%,#0f4c81 50%,var(--teal) 100%);display:flex;flex-direction:column;align-items:center;padding:40px 24px 60px}
+#promo-section{width:100%;max-width:720px;margin-top:48px}
+.promo-label{font-size:11px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.5);text-transform:uppercase;text-align:center;margin-bottom:8px}
+.promo-heading{font-size:22px;font-weight:700;color:#fff;text-align:center;margin-bottom:6px}
+.promo-sub{font-size:14px;color:rgba(255,255,255,0.72);text-align:center;margin-bottom:28px}
+.promo-card{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:14px;padding:18px;backdrop-filter:blur(4px)}
+.promo-card-white{background:#fff;border-radius:14px;padding:20px}
+.pval-icon{font-size:28px;margin-bottom:8px;display:block}
+.pval-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px}
+.pval-sub{font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5}
+.step-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:10px;padding:10px 14px;cursor:pointer;transition:all 0.2s;text-align:right;color:#fff}
+.step-btn.sp-active{background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.5)}
+.step-btn-num{font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:2px}
+.step-btn-title{font-size:13px;font-weight:600}
+.step-btn-sub{font-size:11px;color:rgba(255,255,255,0.65);margin-top:2px}
+.demo-panel{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:18px;min-height:160px}
+.demo-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;margin-bottom:8px;animation:promo-fade 0.35s ease both}
+@keyframes promo-fade{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+.stat-box{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:12px;padding:16px;text-align:center}
+.stat-num{font-size:30px;font-weight:700;color:#5eead4}
+.stat-lbl{font-size:12px;color:rgba(255,255,255,0.65);margin-top:2px}
+.promo-cta{width:100%;background:#0d9488;color:#fff;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;transition:opacity 0.2s}
+.promo-cta:hover{opacity:0.88}
+.ba-tag{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;display:inline-block}
 .login-logo{text-align:center;margin-bottom:32px}
 .login-logo .logo-circle{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:36px;border:2px solid rgba(255,255,255,0.3)}
 .login-logo h1{color:#fff;font-size:26px;font-weight:700;letter-spacing:-0.5px}
@@ -269,7 +292,73 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--gray);color:var(--
       <button class="btn-primary" onclick="loginAdvisor()">כניסה לפאנל ניהול</button>
     </div>
   </div>
+
+  <div id="promo-section">
+    <div class="promo-label">כלי דיגיטלי לליווי פיננסי</div>
+    <div class="promo-heading">מה זה שקט כלכלי?</div>
+    <div class="promo-sub">מערכת חכמה שמנתחת את המצב הפיננסי של המשפחה — ומאפשרת לי ללוות אתכם בצורה מדויקת</div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:28px">
+      <div class="promo-card"><span class="pval-icon">📁</span><div class="pval-title">מעלים מסמכים</div><div class="pval-sub">תלוש שכר, בנק, אשראי — ב-30 שניות</div></div>
+      <div class="promo-card"><span class="pval-icon">🤖</span><div class="pval-title">AI מנתח הכל</div><div class="pval-sub">מזהה הכנסות, הוצאות וקטגוריות אוטומטית</div></div>
+      <div class="promo-card"><span class="pval-icon">📊</span><div class="pval-title">רואים תמונה</div><div class="pval-sub">ציון פיננסי, תזרים ודפוסים שלא ידעתם</div></div>
+      <div class="promo-card"><span class="pval-icon">🎯</span><div class="pval-title">מתקדמים יחד</div><div class="pval-sub">יעדים ומעקב בזמן אמת</div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px">
+      <div class="promo-card">
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:10px">בלי הכלי</div>
+        <div style="margin-bottom:8px"><span class="ba-tag" style="background:rgba(239,68,68,0.25);color:#fca5a5">ניחושים</span> → <span class="ba-tag" style="background:rgba(245,158,11,0.25);color:#fcd34d">לחץ</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6">"כמה בדיוק אנחנו מוציאים על אוכל?"</div>
+      </div>
+      <div class="promo-card" style="border-color:rgba(94,234,212,0.5);background:rgba(13,148,136,0.2)">
+        <div style="font-size:12px;color:#5eead4;margin-bottom:10px">עם הכלי ✓</div>
+        <div style="margin-bottom:8px"><span class="ba-tag" style="background:rgba(16,185,129,0.25);color:#6ee7b7">נתונים</span> → <span class="ba-tag" style="background:rgba(16,185,129,0.25);color:#6ee7b7">שקט</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.75);line-height:1.6">"3,300 ₪ על מזון — 6% מתחת ליעד"</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:28px">
+      <div style="font-size:14px;font-weight:600;color:#fff;margin-bottom:14px;text-align:center">איך זה עובד? לחץ על כל שלב</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px">
+        <button class="step-btn sp-active" onclick="promoStep(0,this)"><div class="step-btn-num">שלב 1</div><div class="step-btn-title">העלאה</div><div class="step-btn-sub">מסמכים</div></button>
+        <button class="step-btn" onclick="promoStep(1,this)"><div class="step-btn-num">שלב 2</div><div class="step-btn-title">ניתוח AI</div><div class="step-btn-sub">אוטומטי</div></button>
+        <button class="step-btn" onclick="promoStep(2,this)"><div class="step-btn-num">שלב 3</div><div class="step-btn-title">תובנות</div><div class="step-btn-sub">ציון ותזרים</div></button>
+        <button class="step-btn" onclick="promoStep(3,this)"><div class="step-btn-num">שלב 4</div><div class="step-btn-title">יעדים</div><div class="step-btn-sub">מעקב</div></button>
+      </div>
+      <div class="demo-panel" id="promo-demo-panel"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px">
+      <div class="stat-box"><div class="stat-num">74</div><div class="stat-lbl">ציון פיננסי ממוצע</div></div>
+      <div class="stat-box"><div class="stat-num">5</div><div class="stat-lbl">דקות להגדרה</div></div>
+      <div class="stat-box"><div class="stat-num">3</div><div class="stat-lbl">חודשים לשינוי</div></div>
+    </div>
+
+    <div class="promo-card" style="text-align:center">
+      <div style="font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:4px">הכלי ניתן ללקוחות שאני מלווה — לא למכירה</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:14px">רוצה לדעת אם ליווי כזה מתאים לך?</div>
+      <button class="promo-cta" onclick="window.open('https://wa.me/972XXXXXXXXX','_blank')">בואו נדבר 💬</button>
+    </div>
+  </div>
 </div>
+
+<script>
+var promoDemos=[
+  ['📄 תלוש משכורת - יוני 2025.pdf','🏦 תדפיס בנק - מאי 2025.pdf','💳 דף אשראי ויזה - אפריל 2025.pdf'].map((f,i)=>`<div class="demo-row" style="animation-delay:${i*0.1}s"><span style="font-size:18px">${f.split(' ')[0]}</span><span style="font-size:13px;color:#fff;flex:1">${f.slice(3)}</span><span style="font-size:11px;color:#5eead4;font-weight:600">✓ הועלה</span></div>`).join('')+'<div style="font-size:12px;color:rgba(255,255,255,0.5);text-align:center;margin-top:8px">PDF, Excel, תמונה מהטלפון — הכל עובד</div>',
+  ['מזהה סוג מסמך','מחלץ הכנסות והוצאות','מסווג קטגוריות הוצאה','מחשב ציון פיננסי'].map((t,i)=>`<div class="demo-row" style="animation-delay:${i*0.15}s"><span style="color:#5eead4">✓</span><span style="font-size:13px;color:#fff">${t}</span></div>`).join(''),
+  `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${[['הכנסה חודשית','18,500 ₪','#5eead4'],['הוצאה חודשית','14,200 ₪','#fca5a5'],['תזרים חיובי','4,300 ₪','#5eead4'],['ציון שקט','74/100','#fcd34d']].map(([l,v,c],i)=>`<div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:10px;animation:promo-fade 0.3s ease ${i*0.1}s both"><div style="font-size:11px;color:rgba(255,255,255,0.55);margin-bottom:2px">${l}</div><div style="font-size:16px;font-weight:700;color:${c}">${v}</div></div>`).join('')}</div>`,
+  [['קרן חירום','36%'],['חיסכון חופשה','40%'],['פירעון הלוואה','60%']].map(([g,p],i)=>`<div style="margin-bottom:12px;animation:promo-fade 0.3s ease ${i*0.15}s both"><div style="display:flex;justify-content:space-between;font-size:12px;color:#fff;margin-bottom:4px"><span>🎯 ${g}</span><span style="color:#5eead4">${p}</span></div><div style="background:rgba(255,255,255,0.1);border-radius:4px;height:7px"><div style="height:100%;border-radius:4px;background:#0d9488;width:${p};transition:width 1s ease"></div></div></div>`).join('')
+];
+function promoStep(i,btn){
+  document.querySelectorAll('.step-btn').forEach(b=>b.classList.remove('sp-active'));
+  btn.classList.add('sp-active');
+  var p=document.getElementById('promo-demo-panel');
+  p.style.opacity=0;
+  setTimeout(function(){p.innerHTML=promoDemos[i];p.style.opacity=1;p.style.transition='opacity 0.25s';},150);
+}
+promoStep(0,document.querySelector('.step-btn'));
+</script>
 
 <!-- APP SHELL -->
 <div id="app-shell" class="hidden">
